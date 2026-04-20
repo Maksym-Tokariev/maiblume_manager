@@ -1,0 +1,17 @@
+import * as dotenv from 'dotenv';
+import * as path from 'path';
+import {LOG_LEVEL} from "./LoggingConfig";
+
+dotenv.config({
+    path: path.resolve(process.cwd(), '.env')
+});
+
+export const appConfig = {
+    token: process.env.API_KEY_BOT || "",
+    logging: {
+        level: LOG_LEVEL.DEBUG,
+        showTimestamp: true,
+        showLevel: true,
+        showContext: true
+    }
+};
