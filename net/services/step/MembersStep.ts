@@ -26,7 +26,8 @@ export class MembersStep implements IStepHandler {
             return;
         }
         state.data.time = input.text;
-        await this.state.updateStep(userId, CreateFlowSteps.DESCRIPTION);
+
         await this.sender.sendStepMessage(userId, chatId, this.step);
+        await this.state.updateStep(userId);
     }
 }

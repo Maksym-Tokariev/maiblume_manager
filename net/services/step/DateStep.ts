@@ -14,7 +14,7 @@ export class DateStep implements IStepHandler {
 
     async handle(userId: number, chatId: number, state: State) {
         await this.sender.sendStepMessage(userId, chatId, this.step, state);
-        await this.state.updateStep(userId, CreateFlowSteps.TIME);
+        await this.state.updateStep(userId);
     }
 
 }

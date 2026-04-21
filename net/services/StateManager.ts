@@ -36,9 +36,9 @@ export class StateManager {
         this.logger.debug('User flows: ', stack);
     }
 
-    public async updateStep(userId: number, step: CreateFlowSteps){
+    public async updateStep(userId: number){
         const state = await this.getCurrState(userId);
-        if (state) state.currStep = step;
+        if (state) state.currStep = this.getNextStep(state.currStep);
     }
 
     public async updateData(userId: number, data: Partial<State['data']>){
@@ -46,7 +46,7 @@ export class StateManager {
         if (curr) curr.data = {...curr.data, ...data};
     }
 
-    public async completeFlow(userId: number, chatId: number): Promise<Nullable<Meeting>> {
+    public async completeFlow(userId: number): Promise<Nullable<Meeting>> {
         const stack = this.getStack(userId);
         const curr = stack.pop();
 
@@ -58,7 +58,7 @@ export class StateManager {
         return data;
     }
 
-    public async cancelFlow(userId: number, chatId: number) {
+    public async cancelFlow(userId: number) {
         const stack = this.getStack(userId);
         const curr = stack.pop();
 
@@ -70,5 +70,11 @@ export class StateManager {
     public async resetAllFlows(userId: number) {
         this.states.set(userId, []);
         this.logger.debug("All flows reset for user:", userId);
+    }
+
+    private getNextStep(step: CreateFlowSteps) {
+        const steps = Object.values(CreateFlowSteps).filter(v => typeof v === 'number');
+        const currIndex = steps.indexOf(step);
+        return steps[currIndex + 1] ?? CreateFlowSteps.IDLE;
     }
 }

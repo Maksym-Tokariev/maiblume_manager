@@ -13,8 +13,7 @@ export class TimeStep implements IStepHandler {
     constructor(
         private state: StateManager,
         private sender: MessageSender
-    ) {
-    }
+    ) {}
 
     async handle(userId: number, chatId: number, state: State, input: IInputSource): Promise<void> {
         if (!input.data) {
@@ -22,8 +21,9 @@ export class TimeStep implements IStepHandler {
             return;
         }
         state.data.date = new Date(input.data.substring(5, input.data.length));
-        await this.state.updateStep(userId, CreateFlowSteps.MEMBERS);
+
         await this.sender.sendStepMessage(userId, chatId, this.step);
+        await this.state.updateStep(userId);
     }
 
 }

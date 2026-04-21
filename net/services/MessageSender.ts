@@ -43,7 +43,7 @@ export class MessageSender {
                     await this.bot.sendMessage(
                         chatId,
                         'Перечислете учасников через пробел используя символ `@`',
-                    )
+                    );
                     break;
             }
         } catch (err: any) {
