@@ -33,7 +33,7 @@ export class Bot {
     private setupErrorHandling(): void {
         this.bot.on("polling_error", (err: Error) => {
             this.logger.error(`Polling error: [${err}]`);
-        })
+        });
     }
 
     private setupMessageListener(): void {

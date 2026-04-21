@@ -28,13 +28,22 @@ export class MessageSender {
         try {
             switch (step) {
                 case CreateFlowSteps.DATE:
-                    await this.bot.sendMessage(chatId, 'Выберете дату собрания', {
+                    await this.bot.sendMessage(
+                        chatId, 'Выберете дату собрания', {
                         reply_markup: Keyboards.dates,
                     });
                     break;
 
                 case CreateFlowSteps.TIME:
-                    await this.bot.sendMessage(chatId, 'Введите время встречи, например: 22, или 21:30');
+                    await this.bot.sendMessage(
+                        chatId, 'Введите время встречи, например: 22, или 21:30');
+                    break;
+
+                case CreateFlowSteps.MEMBERS:
+                    await this.bot.sendMessage(
+                        chatId,
+                        'Перечислете учасников через пробел используя символ `@`',
+                    )
                     break;
             }
         } catch (err: any) {

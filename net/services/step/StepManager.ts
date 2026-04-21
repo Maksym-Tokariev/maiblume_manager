@@ -8,6 +8,7 @@ import {MessageSender} from "../MessageSender";
 import {DateStep} from "./DateStep";
 import {TimeStep} from "./TimeStep";
 import {IInputSource} from "../interfaces/IInputSource";
+import {MembersStep} from "./MembersStep";
 
 export class StepManager {
     private readonly logger = new Logger(StepManager.name);
@@ -19,6 +20,7 @@ export class StepManager {
     ) {
         this.handlers.add(new DateStep(this.sender, this.state));
         this.handlers.add(new TimeStep(this.state, this.sender));
+        this.handlers.add(new MembersStep(this.state, this.sender));
     }
 
     public async findStep(userId: number, chatId: number, state: State, input: IInputSource) {
