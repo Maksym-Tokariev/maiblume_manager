@@ -46,16 +46,12 @@ export class StateManager {
         if (curr) curr.data = {...curr.data, ...data};
     }
 
-    public async completeFlow(userId: number): Promise<Nullable<Meeting>> {
+    public async completeFlow(userId: number) {
         const stack = this.getStack(userId);
         const curr = stack.pop();
-
         if (!curr) return null;
 
-        const data = curr.data;
-
         this.logger.debug("Flow completed for user:", userId);
-        return data;
     }
 
     public async cancelFlow(userId: number) {

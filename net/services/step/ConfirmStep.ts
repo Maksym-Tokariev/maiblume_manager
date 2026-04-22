@@ -13,8 +13,7 @@ export class ConfirmStep implements IStepHandler {
     constructor(
         private state: StateManager,
         private sender: MessageSender
-    ) {
-    }
+    ) {}
 
     async handle(
         userId: number,
@@ -34,5 +33,4 @@ export class ConfirmStep implements IStepHandler {
         await this.sender.sendStepMessage(userId, chatId, this.step);
         await this.state.updateStep(userId);
     }
-
 }

@@ -31,4 +31,12 @@ export class Buttons {
             [ {text: members[5]} ]
         ]
     }
+
+    public static get yes() {
+
+    }
+
+    public static get no() {
+
+    }
 }

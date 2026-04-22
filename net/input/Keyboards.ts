@@ -1,8 +1,8 @@
 import {Buttons} from "./Buttons";
-import {members} from "../config/Members";
 
 
 export class Keyboards {
+
     public static get dates() {
         return {
             inline_keyboard: Buttons.days
@@ -12,6 +12,14 @@ export class Keyboards {
     public static get members() {
         return {
             keyboard: Buttons.members
+        }
+    }
+
+    public static get confirmFlow() {
+        return {
+            inline_keyboard: [
+                [Buttons.yes, Buttons.no]
+            ]
         }
     }
 }

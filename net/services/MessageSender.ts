@@ -50,12 +50,28 @@ export class MessageSender {
                         {reply_markup: Keyboards.members}
                     );
                     break;
+
                 case CreateFlowSteps.DESCRIPTION:
                     await this.bot.sendMessage(
                         chatId,
                         'Введите описание/цели встречи',
                         {reply_markup: {keyboard: []}}
                     );
+                    break;
+
+                case CreateFlowSteps.CONFIRM:
+                    await this.bot.sendMessage(
+                        chatId,
+                        `Подтвердить создание собрания
+                              Дата: ${input?.data.date} 
+                              Время: ${input?.data.time}
+                              Учасники: ${input?.data.members} 
+                              Описание: ${input?.data.description},
+                              Кем создано: ${input?.data.createdBy}`,
+                        {
+                            reply_markup: Keyboards.confirmFlow
+                        }
+                    )
                     break;
             }
         } catch (err: any) {
