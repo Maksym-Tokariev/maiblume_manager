@@ -1,7 +1,8 @@
 import TelegramBot from "node-telegram-bot-api";
+import {members} from "../config/Members";
 
 export class Buttons {
-    public static getDaysButtons(): TelegramBot.InlineKeyboardButton[][] {
+    public static get days(): TelegramBot.InlineKeyboardButton[][] {
         const days = [];
         const today = new Date();
 
@@ -17,6 +18,17 @@ export class Buttons {
             [ {text: days[2], callback_data: `date:${days[2]}`} ],
             [ {text: days[3], callback_data: `date:${days[3]}`} ],
             [ {text: days[4], callback_data: `date:${days[4]}`} ]
+        ]
+    }
+
+    public static get members(): TelegramBot.KeyboardButton[][] {
+        return [
+            [ {text: members[0]} ],
+            [ {text: members[1]} ],
+            [ {text: members[2]} ],
+            [ {text: members[3]} ],
+            [ {text: members[4]} ],
+            [ {text: members[5]} ]
         ]
     }
 }

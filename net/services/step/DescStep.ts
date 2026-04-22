@@ -3,10 +3,17 @@ import {CreateFlowSteps} from "../../enums/CreateFlowSteps";
 import {State} from "../../models/State";
 import {IInputSource} from "../interfaces/IInputSource";
 import {Logger} from "../../utils/Logger";
+import {StateManager} from "../StateManager";
+import {MessageSender} from "../MessageSender";
 
 export class DescStep implements IStepHandler{
     step: CreateFlowSteps = CreateFlowSteps.DESCRIPTION;
     private readonly logger = new Logger(DescStep.name);
+
+    constructor(
+        private state: StateManager,
+        private sender: MessageSender
+    ) {}
 
     async handle(
         userId: number,
@@ -14,11 +21,14 @@ export class DescStep implements IStepHandler{
         state: State,
         input: IInputSource
     ): Promise<void> {
-        if (!input.data) {
+        if (!input.text) {
             this.logger.warn('Input data is undefined: ', input.data);
             return;
         }
         state.data.members = this.inputStringToStringArr(input.text);
+
+        await this.sender.sendStepMessage(userId, chatId, this.step);
+        await this.state.updateStep(userId);
     }
 
     private inputStringToStringArr(text: Optional<string>): Optional<Set<string>> {

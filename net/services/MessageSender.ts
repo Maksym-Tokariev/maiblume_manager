@@ -7,7 +7,8 @@ import {Keyboards} from "../input/Keyboards";
 export class MessageSender {
     private readonly logger = new Logger(MessageSender.name);
 
-    constructor(private readonly bot: TelegramBot) {}
+    constructor(private readonly bot: TelegramBot) {
+    }
 
     public async sendMessage(chatId: any, text: string): Promise<void> {
         try {
@@ -30,19 +31,30 @@ export class MessageSender {
                 case CreateFlowSteps.DATE:
                     await this.bot.sendMessage(
                         chatId, 'Выберете дату собрания', {
-                        reply_markup: Keyboards.dates,
-                    });
+                            reply_markup: Keyboards.dates,
+                        });
                     break;
 
                 case CreateFlowSteps.TIME:
                     await this.bot.sendMessage(
-                        chatId, 'Введите время встречи, например: 22, или 21:30');
+                        chatId,
+                        'Введите время встречи, например: 22, или 21:30',
+                        {reply_markup: {keyboard: []}}
+                    );
                     break;
 
                 case CreateFlowSteps.MEMBERS:
                     await this.bot.sendMessage(
                         chatId,
                         'Перечислете учасников через пробел используя символ `@`',
+                        {reply_markup: Keyboards.members}
+                    );
+                    break;
+                case CreateFlowSteps.DESCRIPTION:
+                    await this.bot.sendMessage(
+                        chatId,
+                        'Введите описание/цели встречи',
+                        {reply_markup: {keyboard: []}}
                     );
                     break;
             }
