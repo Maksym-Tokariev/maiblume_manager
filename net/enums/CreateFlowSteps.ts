@@ -4,4 +4,6 @@ export enum CreateFlowSteps {
     MEMBERS,
     DESCRIPTION,
     IDLE,
+    CONFIRM,
+    CLOSE_FLOW
 }
