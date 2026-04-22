@@ -15,12 +15,14 @@ export class TimeStep implements IStepHandler {
         private sender: MessageSender
     ) {}
 
-    async handle(userId: number, chatId: number, state: State, input: IInputSource): Promise<void> {
+    async handle(userId: number, chatId: number, state: State, input: IInputSource) {
         if (!input.data) {
             this.logger.warn('Input data is undefined: ', input.data);
             return;
         }
         state.data.date = new Date(input.data.substring(5, input.data.length));
+
+        this.logger.debug('State: ', state);
 
         await this.sender.sendStepMessage(userId, chatId, this.step);
         await this.state.updateStep(userId);

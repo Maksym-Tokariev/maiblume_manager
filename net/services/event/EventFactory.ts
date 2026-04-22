@@ -18,7 +18,7 @@ export class EventFactory {
         private strategy: StrategyFactory
     ) {}
 
-    async add(input: TelegramBot.Message | TelegramBot.CallbackQuery) {
+    async create(input: TelegramBot.Message | TelegramBot.CallbackQuery) {
         this.logger.debug('Add an event')
         const event: Optional<IInputSource> = await this.createEvent(input);
         if (!event) {
@@ -27,6 +27,7 @@ export class EventFactory {
         }
 
         if (event.userId && await this.state.isInFlow(event.userId)) {
+            this.logger.debug('Is in flow')
             await this.flow.handleFlow(event, event.userId);
             return;
         }

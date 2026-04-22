@@ -24,6 +24,7 @@ export class FlowService {
     }
 
     async handleFlow(input: IInputSource, userId: number) {
+        this.logger.debug('Handle flow');
         const chatId: number = input.chatId;
 
         const curState = await this.state.getCurrState(userId);
@@ -34,7 +35,7 @@ export class FlowService {
         setTimeout(async () => {
             const isInFlow = await this.state.isInFlow(userId);
             if (isInFlow) {
-                await this.state.cancelFlow(userId, chatId);
+                await this.state.cancelFlow(userId);
                 await this.sender.sendMessage(chatId, "Session time out. Start over");
             }
         }, 5 * 60 * 1000);

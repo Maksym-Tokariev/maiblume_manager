@@ -20,12 +20,14 @@ export class MembersStep implements IStepHandler {
         chatId: number,
         state: State,
         input: IInputSource
-    ): Promise<void> {
-        if (!input.data) {
+    ) {
+        if (!input.text) {
             this.logger.warn('Input data is undefined: ', input.data);
             return;
         }
         state.data.time = input.text;
+
+        this.logger.debug('State: ', state);
 
         await this.sender.sendStepMessage(userId, chatId, this.step);
         await this.state.updateStep(userId);

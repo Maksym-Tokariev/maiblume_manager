@@ -10,7 +10,6 @@ export class StrategyFactory{
     ) {}
 
     async findStrategy(event: IInputSource) {
-        this.logger.debug('Event', event)
         this.logger.debug('Search for a strategy');
         for (const strategy of this.strategies) {
             if (await strategy.canHandle(event)) {
