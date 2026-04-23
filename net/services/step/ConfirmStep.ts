@@ -22,7 +22,7 @@ export class ConfirmStep implements IStepHandler {
         input: IInputSource
     ) {
         if (!input.text) {
-            this.logger.warn('Input data is undefined: ', input.data);
+            this.logger.warn('Input data is undefined: ', input.text);
             return;
         }
 
@@ -30,7 +30,9 @@ export class ConfirmStep implements IStepHandler {
         if (input.from!.username)
             state.data.createdBy = input.from!.username;
 
-        await this.sender.sendStepMessage(userId, chatId, this.step);
+        this.logger.debug('State: ', state);
+
+        await this.sender.sendStepMessage(userId, chatId, this.step, state);
         await this.state.updateStep(userId);
     }
 }

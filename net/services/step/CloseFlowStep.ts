@@ -19,7 +19,7 @@ export class CloseFlowStep implements IStepHandler {
         state: State,
         input?: IInputSource
     ) {
+        await this.sender.sendStepMessage(userId, chatId, this.step);
         await this.state.completeFlow(userId);
-
     }
 }

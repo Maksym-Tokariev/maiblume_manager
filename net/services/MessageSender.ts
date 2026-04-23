@@ -66,11 +66,9 @@ export class MessageSender {
                               Дата: ${input?.data.date} 
                               Время: ${input?.data.time}
                               Учасники: ${input?.data.members} 
-                              Описание: ${input?.data.description},
+                              Описание: ${input?.data.description}
                               Кем создано: ${input?.data.createdBy}`,
-                        {
-                            reply_markup: Keyboards.confirmFlow
-                        }
+                        {reply_markup: Keyboards.confirmFlow}
                     )
                     break;
             }
