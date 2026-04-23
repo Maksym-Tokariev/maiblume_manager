@@ -66,7 +66,7 @@ export class MessageSender {
                         `Подтвердить создание собрания?\n` +
                         `Дата: ${input?.data.date.toDateString()}\n` +
                         `Время: ${input?.data.time}\n` +
-                        `Учасники: ${input?.data.members?.values()}\n` +
+                        `Учасники: ${[...input?.data.members!].join(' ')}\n` +
                         `Описание: ${input?.data.description}\n`+
                         `Кем создано: ${input?.data.createdBy}`,
                         {reply_markup: Keyboards.confirmFlow}
@@ -94,16 +94,13 @@ export class MessageSender {
     }
 
     public async sendMeet(chatId: number, meet: Meeting) {
-        let members: string = '';
-        meet.members?.forEach(member => members.concat(member));
-
         await this.bot.sendMessage(
             chatId,
             `Дата: ${meet.date.toDateString()}\n` +
             `Время: ${meet.time}\n` +
-            `Учасники: ${members}\n` +
-            `Описание: ${meet.description}\n` +
-            `Кем создано: ${meet.createdBy}`
+            `Учасники: ${[...meet.members].join(' ')}\n` +
+            `Описание: ${meet.description ?? ''}\n` +
+            `Кем создано: ${meet.createdBy ?? 'unknown'}`
         );
     }
 }

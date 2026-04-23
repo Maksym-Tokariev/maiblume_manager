@@ -8,6 +8,7 @@ export class MeetManager {
     async create(data: Meeting) {
         if (data) {
             this.meets.push(data);
+            return;
         }
         this.logger.error('Data is undefined', data);
     }

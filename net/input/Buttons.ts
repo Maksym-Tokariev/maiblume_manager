@@ -34,13 +34,13 @@ export class Buttons {
 
     public static get yes(): TelegramBot.InlineKeyboardButton {
         return {
-            text: 'yes', callback_data: 'yes'
+            text: 'Да', callback_data: 'yes'
         };
     }
 
     public static get no(): TelegramBot.InlineKeyboardButton {
         return {
-            text: 'no', callback_data: 'no'
+            text: 'Нет', callback_data: 'no'
         };
     }
 }

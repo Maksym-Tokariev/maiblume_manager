@@ -33,11 +33,7 @@ export class DescStep implements IStepHandler{
         await this.state.updateStep(userId);
     }
 
-    private inputStringToStringArr(text: Optional<string>): Optional<Set<string>> {
-        if (!text) {
-            this.logger.warn('Members are undefined');
-            return;
-        }
+    private inputStringToStringArr(text: string): Set<string> {
         const res = new Set<string>();
         const members: string[] = text.split(' ');
         members.forEach((member: string) => res.add(member));

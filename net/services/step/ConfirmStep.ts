@@ -5,6 +5,7 @@ import {IInputSource} from "../interfaces/IInputSource";
 import {Logger} from "../../utils/Logger";
 import {StateManager} from "../StateManager";
 import {MessageSender} from "../MessageSender";
+import {generateMeetId} from "../../utils/IdGenerator";
 
 export class ConfirmStep implements IStepHandler {
     step: CreateFlowSteps = CreateFlowSteps.CONFIRM;
@@ -28,6 +29,7 @@ export class ConfirmStep implements IStepHandler {
         state.data.description = input.text;
         if (input.from!.username)
             state.data.createdBy = input.from!.username;
+        state.data.id = generateMeetId(userId);
 
         this.logger.debug('State: ', state);
 
