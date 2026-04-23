@@ -62,10 +62,10 @@ export class MessageSender {
                 case CreateFlowSteps.CONFIRM:
                     await this.bot.sendMessage(
                         chatId,
-                        `Подтвердить создание собрания
-                              Дата: ${input?.data.date} 
+                        `Подтвердить создание собрания?
+                              Дата: ${input?.data.date.toLocaleDateString()} 
                               Время: ${input?.data.time}
-                              Учасники: ${input?.data.members} 
+                              Учасники: ${input?.data.members?.values()} 
                               Описание: ${input?.data.description}
                               Кем создано: ${input?.data.createdBy}`,
                         {reply_markup: Keyboards.confirmFlow}

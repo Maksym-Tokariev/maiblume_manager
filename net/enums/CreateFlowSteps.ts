@@ -3,7 +3,7 @@ export enum CreateFlowSteps {
     TIME,
     MEMBERS,
     DESCRIPTION,
-    IDLE,
     CONFIRM,
-    CLOSE_FLOW
+    CLOSE_FLOW,
+    IDLE
 }

@@ -25,7 +25,6 @@ export class ConfirmStep implements IStepHandler {
             this.logger.warn('Input data is undefined: ', input.text);
             return;
         }
-
         state.data.description = input.text;
         if (input.from!.username)
             state.data.createdBy = input.from!.username;
