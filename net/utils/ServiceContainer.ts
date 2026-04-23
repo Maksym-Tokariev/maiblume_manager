@@ -47,6 +47,13 @@ export class ServiceContainer {
     }
 
     private get strategies() {
-        return new StrategyRegistry(this.bot, this.state, this.step, this.flow).strategies;
+        return new StrategyRegistry(
+            this.bot,
+            this.state,
+            this.step,
+            this.flow,
+            this.meet,
+            this.sender
+        ).strategies;
     }
 }

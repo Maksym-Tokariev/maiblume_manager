@@ -28,7 +28,12 @@ export class CommandRegistry {
         this.commands.push({
             command: Commands.CREATE_MEET,
             description: "Назначить собрание"
-        })
+        });
+
+        this.commands.push({
+            command: Commands.MEETINGS,
+            description: "Просмотреть список актуальных собраний"
+        });
 
         try {
             await this.bot.setMyCommands(this.commands);

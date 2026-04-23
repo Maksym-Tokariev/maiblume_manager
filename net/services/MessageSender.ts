@@ -3,6 +3,7 @@ import {Logger} from "../utils/Logger";
 import {CreateFlowSteps} from "../enums/CreateFlowSteps";
 import {State} from "../models/State";
 import {Keyboards} from "../input/Keyboards";
+import {Meeting} from "../models/Meeting";
 
 export class MessageSender {
     private readonly logger = new Logger(MessageSender.name);
@@ -62,12 +63,12 @@ export class MessageSender {
                 case CreateFlowSteps.CONFIRM:
                     await this.bot.sendMessage(
                         chatId,
-                        `Подтвердить создание собрания?
-                              Дата: ${input?.data.date.toLocaleDateString()} 
-                              Время: ${input?.data.time}
-                              Учасники: ${input?.data.members?.values()} 
-                              Описание: ${input?.data.description}
-                              Кем создано: ${input?.data.createdBy}`,
+                        `Подтвердить создание собрания?\n` +
+                        `Дата: ${input?.data.date.toDateString()}\n` +
+                        `Время: ${input?.data.time}\n` +
+                        `Учасники: ${input?.data.members?.values()}\n` +
+                        `Описание: ${input?.data.description}\n`+
+                        `Кем создано: ${input?.data.createdBy}`,
                         {reply_markup: Keyboards.confirmFlow}
                     )
                     break;
@@ -80,7 +81,7 @@ export class MessageSender {
     async sendFlowComplete(chatId: number) {
         await this.bot.sendMessage(
             chatId,
-            'Собрание успеешно создано\n Посмотреть список заплпнированых /meetlist',
+            'Собрание успеешно создано\nПосмотреть список заплпнированых\n/meetings',
             {reply_markup: {keyboard: []}}
         );
     }
@@ -89,6 +90,20 @@ export class MessageSender {
         await this.bot.sendMessage(
             chatId,
             'Собрание отменено',
+        );
+    }
+
+    public async sendMeet(chatId: number, meet: Meeting) {
+        let members: string = '';
+        meet.members?.forEach(member => members.concat(member));
+
+        await this.bot.sendMessage(
+            chatId,
+            `Дата: ${meet.date.toDateString()}\n` +
+            `Время: ${meet.time}\n` +
+            `Учасники: ${members}\n` +
+            `Описание: ${meet.description}\n` +
+            `Кем создано: ${meet.createdBy}`
         );
     }
 }
