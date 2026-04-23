@@ -77,4 +77,18 @@ export class MessageSender {
         }
     }
 
+    async sendFlowComplete(chatId: number) {
+        await this.bot.sendMessage(
+            chatId,
+            'Собрание успеешно создано\n Посмотреть список заплпнированых /meetlist',
+            {reply_markup: {keyboard: []}}
+        );
+    }
+
+    async sendFlowCancel(userId: number, chatId: number) {
+        await this.bot.sendMessage(
+            chatId,
+            'Собрание отменено',
+        );
+    }
 }

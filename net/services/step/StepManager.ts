@@ -10,6 +10,7 @@ import {MembersStep} from "./MembersStep";
 import {DescStep} from "./DescStep";
 import {ConfirmStep} from "./ConfirmStep";
 import {CloseFlowStep} from "./CloseFlowStep";
+import {MeetManager} from "../MeetManager";
 
 export class StepManager {
     private readonly logger = new Logger(StepManager.name);
@@ -17,14 +18,15 @@ export class StepManager {
 
     constructor(
         private state: StateManager,
-        private sender: MessageSender
+        private sender: MessageSender,
+        private meet: MeetManager
     ) {
         this.handlers.add(new DateStep(this.sender, this.state));
         this.handlers.add(new TimeStep(this.state, this.sender));
         this.handlers.add(new MembersStep(this.state, this.sender));
         this.handlers.add(new DescStep(this.state, this.sender));
         this.handlers.add(new ConfirmStep(this.state, this.sender));
-        this.handlers.add(new CloseFlowStep(this.state, this.sender));
+        this.handlers.add(new CloseFlowStep(this.state, this.sender, this.meet));
     }
 
     public async findStep(userId: number, chatId: number, state: State, input: IInputSource) {
