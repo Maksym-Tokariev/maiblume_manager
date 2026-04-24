@@ -17,6 +17,9 @@ export class ShowCurrMeetsStrategy extends BaseStrategy {
     async handle(input: IInputSource): Promise<void> {
         const meets: Meeting[] = this.meets.meets;
 
+        if (meets.length === 0)
+            await this.sender.sendMessage(input.chatId, 'Нет активных собраний');
+
         for (const meet of meets) {
             await this.sender.sendMeet(input.chatId, meet)
         }

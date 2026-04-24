@@ -7,6 +7,7 @@ import {FlowService} from "../flow/FlowService";
 import {ShowCurrMeetsStrategy} from "./ShowCurrMeetsStrategy";
 import {MeetManager} from "../MeetManager";
 import {MessageSender} from "../MessageSender";
+import {DeleteMeetStrategy} from "./DeleteMeetStrategy";
 
 export class StrategyRegistry {
     private readonly _strategies: Set<IStrategy> = new Set<IStrategy>();
@@ -25,6 +26,9 @@ export class StrategyRegistry {
         );
         this._strategies.add(
           new ShowCurrMeetsStrategy(bot, this.meet, this.sender)
+        );
+        this._strategies.add(
+            new DeleteMeetStrategy(bot, this.sender, this.meet)
         );
     }
 
