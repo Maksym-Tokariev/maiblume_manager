@@ -31,15 +31,16 @@ export class MessageSender {
             switch (step) {
                 case CreateFlowSteps.DATE:
                     await this.bot.sendMessage(
-                        chatId, 'Выберете дату собрания', {
-                            reply_markup: Keyboards.dates,
-                        });
+                        chatId,
+                        'Выберете дату собрания',
+                        {reply_markup: Keyboards.dates}
+                    );
                     break;
 
                 case CreateFlowSteps.TIME:
                     await this.bot.sendMessage(
                         chatId,
-                        'Введите время встречи, например: 22, или 21:30',
+                        'Введите время встречи, например: 22, или 21:30'
                     );
                     break;
 
@@ -47,11 +48,7 @@ export class MessageSender {
                     await this.bot.sendMessage(
                         chatId,
                         'Перечислете учасников через пробел используя символ `@`',
-                        {
-                            reply_markup: {
-                                inline_keyboard: Keyboards.members,
-                            }
-                        }
+                        {reply_markup: {inline_keyboard: Keyboards.members}}
                     );
                     break;
 
@@ -66,12 +63,7 @@ export class MessageSender {
                 case CreateFlowSteps.CONFIRM:
                     await this.bot.sendMessage(
                         chatId,
-                        `Подтвердить создание собрания?\n` +
-                        `Дата: ${input?.data.date.toDateString()}\n` +
-                        `Время: ${input?.data.time}\n` +
-                        `Учасники: ${[...input?.data.members!].join(' ')}\n` +
-                        `Описание: ${input?.data.description}\n` +
-                        `Кем создано: ${input?.data.createdBy}`,
+                        `Подтвердить создание собрания?\n` + this.meetMarkup(input?.data!),
                         {reply_markup: Keyboards.confirmFlow}
                     )
                     break;
@@ -84,7 +76,7 @@ export class MessageSender {
     async sendFlowComplete(chatId: number) {
         await this.bot.sendMessage(
             chatId,
-            'Собрание успеешно создано\nПосмотреть список заплпнированых\n/meetings',
+            'Собрание успеешно создано\nПосмотреть список заплпнированых собраний\n/meetings',
             {reply_markup: {keyboard: []}}
         );
     }
@@ -99,12 +91,16 @@ export class MessageSender {
     public async sendMeet(chatId: number, meet: Meeting) {
         await this.bot.sendMessage(
             chatId,
-            `Дата: ${meet.date.toDateString()}\n` +
+            this.meetMarkup(meet),
+            {reply_markup: Keyboards.deleteMeet(meet.id)}
+        );
+    }
+
+    private meetMarkup(meet: Meeting) {
+        return `Дата: ${meet.date.toDateString()}\n` +
             `Время: ${meet.time}\n` +
             `Учасники: ${[...meet.members].join(' ')}\n` +
             `Описание: ${meet.description ?? ''}\n` +
-            `Кем создано: ${meet.createdBy ?? 'unknown'}`,
-            {reply_markup: Keyboards.deleteMeet(meet.id)}
-        );
+            `Кем создано: ${meet.createdBy ?? 'unknown'}`
     }
 }
