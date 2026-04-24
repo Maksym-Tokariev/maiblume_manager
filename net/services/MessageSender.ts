@@ -40,7 +40,6 @@ export class MessageSender {
                     await this.bot.sendMessage(
                         chatId,
                         'Введите время встречи, например: 22, или 21:30',
-                        {reply_markup: {keyboard: []}}
                     );
                     break;
 
@@ -48,7 +47,11 @@ export class MessageSender {
                     await this.bot.sendMessage(
                         chatId,
                         'Перечислете учасников через пробел используя символ `@`',
-                        {reply_markup: Keyboards.members}
+                        {
+                            reply_markup: {
+                                inline_keyboard: Keyboards.members,
+                            }
+                        }
                     );
                     break;
 
@@ -67,7 +70,7 @@ export class MessageSender {
                         `Дата: ${input?.data.date.toDateString()}\n` +
                         `Время: ${input?.data.time}\n` +
                         `Учасники: ${[...input?.data.members!].join(' ')}\n` +
-                        `Описание: ${input?.data.description}\n`+
+                        `Описание: ${input?.data.description}\n` +
                         `Кем создано: ${input?.data.createdBy}`,
                         {reply_markup: Keyboards.confirmFlow}
                     )
@@ -100,7 +103,8 @@ export class MessageSender {
             `Время: ${meet.time}\n` +
             `Учасники: ${[...meet.members].join(' ')}\n` +
             `Описание: ${meet.description ?? ''}\n` +
-            `Кем создано: ${meet.createdBy ?? 'unknown'}`
+            `Кем создано: ${meet.createdBy ?? 'unknown'}`,
+            {reply_markup: Keyboards.deleteMeet(meet.id)}
         );
     }
 }
