@@ -29,10 +29,18 @@ export class InputListener {
             }
         });
         this.bot.on('message',
-            async (msg) => await this.addEvent(msg));
+            async (msg) => {
+                if (msg.chat.type === "private")
+                    await this.addEvent(msg);
+            }
+        );
 
         this.bot.on('callback_query',
-            async (query) => await this.addEvent(query));
+            async (query) => {
+            if (query.message?.chat.type === "private")
+                await this.addEvent(query)
+            }
+        );
     }
 
     async addEvent(input: Message | CallbackQuery): Promise<void> {
