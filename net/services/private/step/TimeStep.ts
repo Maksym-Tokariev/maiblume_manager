@@ -1,9 +1,9 @@
 import {IStepHandler} from "../interfaces/IStepHandler";
-import {CreateFlowSteps} from "../../enums/CreateFlowSteps";
-import {State} from "../../models/State";
+import {CreateFlowSteps} from "../../../enums/CreateFlowSteps";
+import {State} from "../../../models/State";
 import {StateManager} from "../StateManager";
 import {IInputSource} from "../interfaces/IInputSource";
-import {Logger} from "../../utils/Logger";
+import {Logger} from "../../../utils/Logger";
 import {MessageSender} from "../MessageSender";
 
 export class TimeStep implements IStepHandler {

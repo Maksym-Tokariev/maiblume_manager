@@ -1,5 +1,5 @@
-import {State} from "../../models/State";
-import {CreateFlowSteps} from "../../enums/CreateFlowSteps";
+import {State} from "../../../models/State";
+import {CreateFlowSteps} from "../../../enums/CreateFlowSteps";
 import {IInputSource} from "./IInputSource";
 
 export interface IStepHandler {

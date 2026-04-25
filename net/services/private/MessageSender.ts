@@ -1,10 +1,10 @@
 import TelegramBot, {SendMessageOptions} from "node-telegram-bot-api";
-import {Logger} from "../utils/Logger";
-import {CreateFlowSteps} from "../enums/CreateFlowSteps";
-import {State} from "../models/State";
-import {Keyboards} from "../input/Keyboards";
-import {Meeting} from "../models/Meeting";
-import {Texts} from "../utils/Texts";
+import {Logger} from "../../utils/Logger";
+import {CreateFlowSteps} from "../../enums/CreateFlowSteps";
+import {State} from "../../models/State";
+import {Keyboards} from "../../input/Keyboards";
+import {Meeting} from "../../models/Meeting";
+import {Texts} from "../../utils/Texts";
 
 export class MessageSender {
     private readonly logger = new Logger(MessageSender.name);

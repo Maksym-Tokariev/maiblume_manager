@@ -23,7 +23,15 @@ export class Texts {
 
     public static group = {
         invite: 'Привет! Моя цель создавать собрания, задачи и многое другое.\n' +
-            'Сперва нужно начать диалог со мной https://t.me/MaiblumeManagerBot'
+            'Но сперва нужно начать диалог со мной https://t.me/MaiblumeManagerBot',
+    }
+
+    public static notifyAboutMeetPrivate(meet: Meeting) {
+        return 'Вы были приглашены на собрание' + this.meetMarkupText(meet);
+    }
+
+    public static notifyAboutMeetGroup(meet: Meeting) {
+        return 'Было создано собрание\n' + this.meetMarkupText(meet);
     }
 
     public static confirmMarkup(meet: Meeting): string {

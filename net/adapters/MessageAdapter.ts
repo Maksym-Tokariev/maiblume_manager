@@ -1,4 +1,4 @@
-import {IInputSource} from "../services/interfaces/IInputSource";
+import {IInputSource} from "../services/private/interfaces/IInputSource";
 import TelegramBot, {Message, User} from "node-telegram-bot-api";
 
 export class MessageAdapter implements IInputSource {

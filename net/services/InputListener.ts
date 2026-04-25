@@ -1,14 +1,16 @@
 import TelegramBot, {CallbackQuery, Message} from "node-telegram-bot-api";
 import {Logger} from "../utils/Logger";
-import {EventFactory} from "./event/EventFactory";
+import {EventFactory} from "./private/event/EventFactory";
 import {Texts} from "../utils/Texts";
+import {GroupManager} from "./group/GroupManager";
 
 export class InputListener {
     private readonly logger = new Logger(InputListener.name);
 
     constructor(
         private readonly bot: TelegramBot,
-        private eventFactory: EventFactory
+        private eventFactory: EventFactory,
+        private group: GroupManager
     ) {
         this.logger.info("InputListener has been initialized");
     }
@@ -26,21 +28,29 @@ export class InputListener {
                     msg.chat.id,
                     Texts.group.invite
                 );
+                await this.group.addGroup(msg.chat.title, msg.chat.id);
             }
         });
-        this.bot.on('message',
-            async (msg) => {
+        this.bot.on('message', async (msg) => {
                 if (msg.chat.type === "private")
                     await this.addEvent(msg);
             }
         );
 
-        this.bot.on('callback_query',
-            async (query) => {
+        this.bot.on('callback_query', async (query) => {
             if (query.message?.chat.type === "private")
                 await this.addEvent(query)
+        });
+
+        this.bot.on('my_chat_member', async (update) => {
+            const chatId = update.chat.id;
+            const newStatus = update.new_chat_member.status;
+
+            if (newStatus === 'left' || newStatus === 'kicked') {
+                this.logger.info('The bot was removed from a group');
+                this.group.deleteGroup(chatId);
             }
-        );
+        });
     }
 
     async addEvent(input: Message | CallbackQuery): Promise<void> {

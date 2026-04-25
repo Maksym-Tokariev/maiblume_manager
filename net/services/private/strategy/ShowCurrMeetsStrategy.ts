@@ -3,8 +3,8 @@ import {IInputSource} from "../interfaces/IInputSource";
 import TelegramBot from "node-telegram-bot-api";
 import {MeetManager} from "../MeetManager";
 import {MessageSender} from "../MessageSender";
-import {Meeting} from "../../models/Meeting";
-import {Texts} from "../../utils/Texts";
+import {Meeting} from "../../../models/Meeting";
+import {Texts} from "../../../utils/Texts";
 
 export class ShowCurrMeetsStrategy extends BaseStrategy {
     constructor(

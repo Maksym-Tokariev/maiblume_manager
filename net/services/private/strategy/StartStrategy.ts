@@ -2,7 +2,8 @@ import {BaseStrategy} from "./BaseStrategy";
 import {IInputSource} from "../interfaces/IInputSource";
 import TelegramBot from "node-telegram-bot-api";
 import {MessageSender} from "../MessageSender";
-import {Texts} from "../../utils/Texts";
+import {Texts} from "../../../utils/Texts";
+import {membersId} from "../../../config/Members";
 
 export class StartStrategy extends BaseStrategy {
 
@@ -18,6 +19,8 @@ export class StartStrategy extends BaseStrategy {
            input.chatId,
            Texts.startText
        );
+
+       membersId.set('@' + input.from!.username!, input.userId!);
     }
 
     async canHandle(event: IInputSource): Promise<Optional<boolean>> {

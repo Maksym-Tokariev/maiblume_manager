@@ -1,4 +1,4 @@
-import {Logger} from "../../utils/Logger";
+import {Logger} from "../../../utils/Logger";
 import {IInputSource} from "../interfaces/IInputSource";
 import {IStrategy} from "../interfaces/IStrategy";
 

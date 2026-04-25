@@ -1,10 +1,10 @@
-import {Logger} from "../../utils/Logger";
-import {Flows} from "../../enums/Flows";
+import {Logger} from "../../../utils/Logger";
+import {Flows} from "../../../enums/Flows";
 import {MessageSender} from "../MessageSender";
 import {StateManager} from "../StateManager";
 import {StepManager} from "../step/StepManager";
 import {ValidationService} from "../validation/ValidationService";
-import {CreateFlowSteps} from "../../enums/CreateFlowSteps";
+import {CreateFlowSteps} from "../../../enums/CreateFlowSteps";
 import {IInputSource} from "../interfaces/IInputSource";
 
 export class FlowService {

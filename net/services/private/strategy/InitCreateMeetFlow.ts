@@ -2,7 +2,7 @@ import {BaseStrategy} from "./BaseStrategy";
 import TelegramBot from "node-telegram-bot-api";
 import {IInputSource} from "../interfaces/IInputSource";
 import {StateManager} from "../StateManager";
-import {Flows} from "../../enums/Flows";
+import {Flows} from "../../../enums/Flows";
 import {StepManager} from "../step/StepManager";
 import {FlowService} from "../flow/FlowService";
 

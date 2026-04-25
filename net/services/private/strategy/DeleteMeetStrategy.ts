@@ -3,8 +3,8 @@ import {IInputSource} from "../interfaces/IInputSource";
 import TelegramBot from "node-telegram-bot-api";
 import {MessageSender} from "../MessageSender";
 import {MeetManager} from "../MeetManager";
-import {Logger} from "../../utils/Logger";
-import {Texts} from "../../utils/Texts";
+import {Logger} from "../../../utils/Logger";
+import {Texts} from "../../../utils/Texts";
 
 export class DeleteMeetStrategy extends BaseStrategy {
     private readonly logger = new Logger(DeleteMeetStrategy.name);

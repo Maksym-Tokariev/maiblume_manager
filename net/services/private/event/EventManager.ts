@@ -1,6 +1,6 @@
 import {IObservable} from "../interfaces/IObservable";
 import {IEventListener} from "../interfaces/IEventListener";
-import {Logger} from "../../utils/Logger";
+import {Logger} from "../../../utils/Logger";
 import {IInputSource} from "../interfaces/IInputSource";
 
 export class EventManager implements IObservable {

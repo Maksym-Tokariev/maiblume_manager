@@ -1,9 +1,9 @@
 import {EventManager} from "./EventManager";
 import TelegramBot, {CallbackQuery, Message} from "node-telegram-bot-api";
-import {Logger} from "../../utils/Logger";
+import {Logger} from "../../../utils/Logger";
 import {IInputSource} from "../interfaces/IInputSource";
-import {MessageAdapter} from "../../adapters/MessageAdapter";
-import {CallbackAdapter} from "../../adapters/CallbackAdapter";
+import {MessageAdapter} from "../../../adapters/MessageAdapter";
+import {CallbackAdapter} from "../../../adapters/CallbackAdapter";
 import {StateManager} from "../StateManager";
 import {FlowService} from "../flow/FlowService";
 import {StrategyFactory} from "../strategy/StrategyFactory";

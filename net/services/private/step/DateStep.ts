@@ -1,6 +1,6 @@
 import {IStepHandler} from "../interfaces/IStepHandler";
-import {CreateFlowSteps} from "../../enums/CreateFlowSteps";
-import {State} from "../../models/State";
+import {CreateFlowSteps} from "../../../enums/CreateFlowSteps";
+import {State} from "../../../models/State";
 import {MessageSender} from "../MessageSender";
 import {StateManager} from "../StateManager";
 
