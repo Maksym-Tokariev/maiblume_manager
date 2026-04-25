@@ -4,6 +4,7 @@ import TelegramBot from "node-telegram-bot-api";
 import {MessageSender} from "../MessageSender";
 import {MeetManager} from "../MeetManager";
 import {Logger} from "../../utils/Logger";
+import {Texts} from "../../utils/Texts";
 
 export class DeleteMeetStrategy extends BaseStrategy {
     private readonly logger = new Logger(DeleteMeetStrategy.name);
@@ -20,7 +21,7 @@ export class DeleteMeetStrategy extends BaseStrategy {
         const meetId = input.data!.substring(7, input.data!.length);
         await this.meet.deleteMeetById(meetId);
 
-        await this.sender.sendMessage(input.chatId, 'Собрание успешно удалено');
+        await this.sender.sendMessage(input.chatId, Texts.meet.remove);
         await this.answerQuery(input);
     }
 

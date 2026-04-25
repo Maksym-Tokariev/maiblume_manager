@@ -1,23 +1,25 @@
-import TelegramBot from "node-telegram-bot-api";
+import TelegramBot, {SendMessageOptions} from "node-telegram-bot-api";
 import {Logger} from "../utils/Logger";
 import {CreateFlowSteps} from "../enums/CreateFlowSteps";
 import {State} from "../models/State";
 import {Keyboards} from "../input/Keyboards";
 import {Meeting} from "../models/Meeting";
+import {Texts} from "../utils/Texts";
 
 export class MessageSender {
     private readonly logger = new Logger(MessageSender.name);
 
-    constructor(private readonly bot: TelegramBot) {
-    }
+    constructor(private readonly bot: TelegramBot) {}
 
-    public async sendMessage(chatId: any, text: string): Promise<void> {
+    public async sendMessage(chatId: any, text: string, options?: SendMessageOptions): Promise<void> {
         try {
+            if (options) {
+                await this.bot.sendMessage(chatId, text, options);
+                return;
+            }
             await this.bot.sendMessage(chatId, text);
-        } catch (err: unknown) {
-            // if (err instanceof SendMessageError) {
-            //     this.logger.error(err.message, err.stack);
-            // }
+        } catch (err: any) {
+            this.logger.error(err.message, err.stack);
         }
     }
 
@@ -30,40 +32,40 @@ export class MessageSender {
         try {
             switch (step) {
                 case CreateFlowSteps.DATE:
-                    await this.bot.sendMessage(
+                    await this.sendMessage(
                         chatId,
-                        'Выберете дату собрания',
+                        Texts.flowTexts.date,
                         {reply_markup: Keyboards.dates}
                     );
                     break;
 
                 case CreateFlowSteps.TIME:
-                    await this.bot.sendMessage(
+                    await this.sendMessage(
                         chatId,
-                        'Введите время встречи, например: 22, или 21:30'
+                        Texts.flowTexts.time
                     );
                     break;
 
                 case CreateFlowSteps.MEMBERS:
-                    await this.bot.sendMessage(
+                    await this.sendMessage(
                         chatId,
-                        'Перечислете учасников через пробел используя символ `@`',
+                        Texts.flowTexts.members,
                         {reply_markup: {inline_keyboard: Keyboards.members}}
                     );
                     break;
 
                 case CreateFlowSteps.DESCRIPTION:
-                    await this.bot.sendMessage(
+                    await this.sendMessage(
                         chatId,
-                        'Введите описание/цели встречи',
+                        Texts.flowTexts.description,
                         {reply_markup: {keyboard: []}}
                     );
                     break;
 
                 case CreateFlowSteps.CONFIRM:
-                    await this.bot.sendMessage(
+                    await this.sendMessage(
                         chatId,
-                        `Подтвердить создание собрания?\n` + this.meetMarkup(input?.data!),
+                        Texts.confirmMarkup(input?.data!),
                         {reply_markup: Keyboards.confirmFlow}
                     )
                     break;
@@ -74,33 +76,25 @@ export class MessageSender {
     }
 
     async sendFlowComplete(chatId: number) {
-        await this.bot.sendMessage(
+        await this.sendMessage(
             chatId,
-            'Собрание успеешно создано\nПосмотреть список заплпнированых собраний\n/meetings',
+            Texts.flowTexts.complete,
             {reply_markup: {keyboard: []}}
         );
     }
 
     async sendFlowCancel(userId: number, chatId: number) {
-        await this.bot.sendMessage(
+        await this.sendMessage(
             chatId,
-            'Собрание отменено',
+            Texts.meet.cancel
         );
     }
 
     public async sendMeet(chatId: number, meet: Meeting) {
-        await this.bot.sendMessage(
+        await this.sendMessage(
             chatId,
-            this.meetMarkup(meet),
+            Texts.meetMarkupText(meet),
             {reply_markup: Keyboards.deleteMeet(meet.id)}
         );
-    }
-
-    private meetMarkup(meet: Meeting) {
-        return `Дата: ${meet.date.toDateString()}\n` +
-            `Время: ${meet.time}\n` +
-            `Учасники: ${[...meet.members].join(' ')}\n` +
-            `Описание: ${meet.description ?? ''}\n` +
-            `Кем создано: ${meet.createdBy ?? 'unknown'}`
     }
 }

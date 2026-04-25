@@ -4,6 +4,7 @@ import TelegramBot from "node-telegram-bot-api";
 import {MeetManager} from "../MeetManager";
 import {MessageSender} from "../MessageSender";
 import {Meeting} from "../../models/Meeting";
+import {Texts} from "../../utils/Texts";
 
 export class ShowCurrMeetsStrategy extends BaseStrategy {
     constructor(
@@ -18,10 +19,10 @@ export class ShowCurrMeetsStrategy extends BaseStrategy {
         const meets: Meeting[] = this.meets.meets;
 
         if (meets.length === 0)
-            await this.sender.sendMessage(input.chatId, 'Нет активных собраний');
+            await this.sender.sendMessage(input.chatId, Texts.meet.empty);
 
         for (const meet of meets) {
-            await this.sender.sendMeet(input.chatId, meet)
+            await this.sender.sendMeet(input.chatId, meet);
         }
     }
 
