@@ -21,6 +21,11 @@ export class Texts {
         empty: 'Нет активных собраний'
     }
 
+    public static group = {
+        invite: 'Привет! Моя цель создавать собрания, задачи и многое другое.\n' +
+            'Сперва нужно начать диалог со мной https://t.me/MaiblumeManagerBot'
+    }
+
     public static confirmMarkup(meet: Meeting): string {
         return 'Подтвердить создание собрания?\n' + this.meetMarkupText(meet)
     }
