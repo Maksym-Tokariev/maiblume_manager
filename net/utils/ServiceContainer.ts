@@ -46,7 +46,7 @@ export class ServiceContainer {
         this.sender = new MessageSender(this.bot);
         this.notificator = new Notificator(this.sender);
         this.meet = new MeetManager(this.notificator);
-        this.step = new StepManager(this.state, this.sender, this.meet);
+        this.step = new StepManager(this.state, this.sender, this.mongo);
         this.flow = new FlowService(this.sender, this.state, this.step, this.validator);
         this.strategyFactory = new StrategyFactory(this.strategies);
         this.eventFactory = new EventFactory(this.eventManager, this.state, this.flow, this.strategyFactory);
@@ -63,7 +63,7 @@ export class ServiceContainer {
             this.state,
             this.step,
             this.flow,
-            this.meet,
+            this.mongo,
             this.sender
         ).strategies;
     }

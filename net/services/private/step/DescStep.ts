@@ -25,7 +25,7 @@ export class DescStep implements IStepHandler{
             this.logger.warn('Input data is undefined: ', input.data);
             return;
         }
-        state.data.members = this.inputStringToStringArr(input.text);
+        state.data.members = input.text.split(' ');
 
         this.logger.debug('State: ', state);
 

@@ -39,9 +39,13 @@ export class Texts {
     }
 
     public static meetMarkupText(meet: Meeting): string {
+        const members = meet.members.length
+            ? meet.members.join(' ')
+            : '-'
+
         return `Дата: ${meet.date.toDateString()}\n` +
             `Время: ${meet.time}\n` +
-            `Учасники: ${[...meet.members].join(' ')}\n` +
+            `Учасники: ${members}\n` +
             `Описание: ${meet.description ?? ''}\n` +
             `Кем создано: ${meet.createdBy ?? 'unknown'}`
     }

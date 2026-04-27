@@ -5,25 +5,26 @@ import {MeetManager} from "../MeetManager";
 import {MessageSender} from "../MessageSender";
 import {Meeting} from "../../../models/Meeting";
 import {Texts} from "../../../utils/Texts";
+import {MongoService} from "../../MongoService";
 
 export class ShowCurrMeetsStrategy extends BaseStrategy {
     constructor(
         bot: TelegramBot,
-        private meets: MeetManager,
+        private mongo: MongoService,
         private sender: MessageSender
     ) {
         super(bot);
     }
 
     async handle(input: IInputSource): Promise<void> {
-        const meets: Meeting[] = this.meets.meets;
+        const meets = this.mongo.meets;
 
-        if (meets.length === 0)
+        if (!meets) {
             await this.sender.sendMessage(input.chatId, Texts.meet.empty);
-
-        for (const meet of meets) {
-            await this.sender.sendMeet(input.chatId, meet);
+            return;
         }
+
+        meets.stream().forEach((meet: Meeting) => { this.sender.sendMeet(input.chatId, meet)});
     }
 
     async canHandle(event: IInputSource): Promise<Optional<boolean>> {

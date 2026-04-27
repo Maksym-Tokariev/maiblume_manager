@@ -9,6 +9,7 @@ import {MeetManager} from "../MeetManager";
 import {MessageSender} from "../MessageSender";
 import {DeleteMeetStrategy} from "./DeleteMeetStrategy";
 import {StartStrategy} from "./StartStrategy";
+import {MongoService} from "../../MongoService";
 
 export class StrategyRegistry {
     private readonly _strategies: Set<IStrategy> = new Set<IStrategy>();
@@ -18,7 +19,7 @@ export class StrategyRegistry {
         private state: StateManager,
         private step: StepManager,
         private flow: FlowService,
-        private meet: MeetManager,
+        private mongo: MongoService,
         private sender: MessageSender
 
     ) {
@@ -26,10 +27,10 @@ export class StrategyRegistry {
             new InitCreateMeetFlow(bot, this.state, this.step, this.flow)
         );
         this._strategies.add(
-          new ShowCurrMeetsStrategy(bot, this.meet, this.sender)
+          new ShowCurrMeetsStrategy(bot, this.mongo, this.sender)
         );
         this._strategies.add(
-            new DeleteMeetStrategy(bot, this.sender, this.meet)
+            new DeleteMeetStrategy(bot, this.sender, this.mongo)
         );
         this._strategies.add(
             new StartStrategy(bot, this.sender)

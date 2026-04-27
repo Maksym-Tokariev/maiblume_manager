@@ -2,9 +2,9 @@ import {BaseStrategy} from "./BaseStrategy";
 import {IInputSource} from "../interfaces/IInputSource";
 import TelegramBot from "node-telegram-bot-api";
 import {MessageSender} from "../MessageSender";
-import {MeetManager} from "../MeetManager";
 import {Logger} from "../../../utils/Logger";
 import {Texts} from "../../../utils/Texts";
+import {MongoService} from "../../MongoService";
 
 export class DeleteMeetStrategy extends BaseStrategy {
     private readonly logger = new Logger(DeleteMeetStrategy.name);
@@ -12,14 +12,14 @@ export class DeleteMeetStrategy extends BaseStrategy {
     constructor(
         bot: TelegramBot,
         private sender: MessageSender,
-        private meet: MeetManager
+        private mongo: MongoService
     ) {
         super(bot);
     }
 
     async handle(input: IInputSource): Promise<void> {
         const meetId = input.data!.substring(7, input.data!.length);
-        await this.meet.deleteMeetById(meetId);
+        await this.mongo.deleteById(meetId);
 
         await this.sender.sendMessage(input.chatId, Texts.meet.remove);
         await this.answerQuery(input);

@@ -39,8 +39,12 @@ export class MongoService {
         await this.meetings.insertOne(meet);
     }
 
-    public async delete(meetId: string) {
+    public async deleteById(meetId: string) {
         if (!this.meetings) throw new Error('No meetings collection');
         await this.meetings?.deleteOne({id: meetId});
+    }
+
+    public get meets() {
+        return this.meetings?.find();
     }
 }

@@ -2,7 +2,7 @@ export interface Meeting {
     id: string;
     date: Date;
     time: string
-    members: Set<string>;
+    members: string[];
     description?: string;
     createdBy: string;
 }
