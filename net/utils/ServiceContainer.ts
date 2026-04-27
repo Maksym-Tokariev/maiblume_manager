@@ -13,9 +13,12 @@ import {StrategyFactory} from "../services/private/strategy/StrategyFactory";
 import {MeetManager} from "../services/private/MeetManager";
 import {GroupManager} from "../services/group/GroupManager";
 import {Notificator} from "../services/Notificator";
+import {MongoService} from "../services/MongoService";
+import {appConfig} from "../config/AppConfig";
 
 export class ServiceContainer {
     private readonly bot: TelegramBot;
+    private readonly mongo: MongoService;
     private readonly inputListener: InputListener;
     private readonly eventFactory: EventFactory;
     private readonly eventManager: EventManager;
@@ -31,6 +34,9 @@ export class ServiceContainer {
 
     constructor(bot: Bot) {
         this.bot = bot.getTelegramBot();
+
+        this.mongo = new MongoService(appConfig.mongo.uri, appConfig.mongo.dbName);
+        this.mongo.connect();
 
         this.eventManager = new EventManager();
         this.state = new StateManager();

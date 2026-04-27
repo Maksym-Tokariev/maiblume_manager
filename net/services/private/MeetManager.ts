@@ -8,8 +8,7 @@ export class MeetManager {
 
     constructor(
         private notificator: Notificator
-    ) {
-    }
+    ) {}
 
     async create(data: Meeting) {
         if (data) {

@@ -13,5 +13,9 @@ export const appConfig = {
         showTimestamp: true,
         showLevel: true,
         showContext: true
+    },
+    mongo: {
+        uri: process.env.MONGO_DB_URI || "",
+        dbName: process.env.MONGO_DB_NAME || ""
     }
 };

@@ -1,0 +1,46 @@
+import {Logger} from "../utils/Logger";
+import {Collection, Db, DeleteResult, MongoClient, UpdateResult, WithId} from "mongodb";
+import {Meeting} from "../models/Meeting";
+
+
+export class MongoService {
+    private readonly logger = new Logger(MongoService.name);
+    private readonly client: MongoClient;
+    private db?: Db;
+    private meetings?: Collection<Meeting>;
+
+    constructor(
+        uri: string,
+        private dbName: string
+    ) {
+        this.client = new MongoClient(uri);
+    }
+
+    public async connect() {
+        try {
+            await this.client.connect();
+            this.db = this.client.db(this.dbName);
+            this.meetings = this.db.collection<Meeting>('meetings');
+
+            this.logger.info("Successful connection to the DB ");
+        } catch (err: any) {
+            this.logger.error(err.message, err.stack);
+            throw err;
+        }
+    }
+
+    public async disconnect(): Promise<void> {
+        await this.client.close();
+        this.logger.info("Connected has been closed");
+    }
+
+    public async insert(meet: Meeting) {
+        if (!this.meetings) throw new Error('No meetings collection');
+        await this.meetings.insertOne(meet);
+    }
+
+    public async delete(meetId: string) {
+        if (!this.meetings) throw new Error('No meetings collection');
+        await this.meetings?.deleteOne({id: meetId});
+    }
+}
