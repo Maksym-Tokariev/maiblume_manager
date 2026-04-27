@@ -11,7 +11,7 @@ export class Bot {
     private readonly logger = new Logger(Bot.name);
 
     public constructor() {
-        this.bot = new TelegramBot(appConfig.token, { polling: true });
+        this.bot = new TelegramBot(appConfig.token, {polling: true});
         this.container = new ServiceContainer(this);
 
         this.initialize();
@@ -41,12 +41,24 @@ export class Bot {
     }
 
     public async start(): Promise<void> {
+        this.container
+            .mongo
+            .connect()
+            .then(() =>
+                this.logger.info('A connection to the database has been established')
+            );
     }
 
     public async stop(): Promise<void> {
         if (this.bot.isPolling()) {
             await this.bot.stopPolling();
         }
+        this.container
+            .mongo
+            .disconnect()
+            .then(() =>
+                this.logger.info('The connection to the database has been terminated')
+            );
         this.logger.info("Bot stopped");
     }
 
