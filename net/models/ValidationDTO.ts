@@ -1,9 +1,8 @@
 export interface ValidationDTO {
     valid: boolean;
     value?: {
-        date?: Date;
         time?: string;
-        members?: string;
+        members?: string[];
     }
     error?: string
 }

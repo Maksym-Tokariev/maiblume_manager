@@ -5,15 +5,18 @@ import {IInputSource} from "../interfaces/IInputSource";
 import {Logger} from "../../../utils/Logger";
 import {StateManager} from "../StateManager";
 import {MessageSender} from "../MessageSender";
+import {ValidationService} from "../validation/ValidationService";
 
-export class DescStep implements IStepHandler{
+export class DescStep implements IStepHandler {
     step: CreateFlowSteps = CreateFlowSteps.DESCRIPTION;
     private readonly logger = new Logger(DescStep.name);
 
     constructor(
         private state: StateManager,
-        private sender: MessageSender
-    ) {}
+        private sender: MessageSender,
+        private validator: ValidationService
+    ) {
+    }
 
     async handle(
         userId: number,
@@ -25,7 +28,14 @@ export class DescStep implements IStepHandler{
             this.logger.warn('Input data is undefined: ', input.data);
             return;
         }
-        state.data.members = input.text.split(' ');
+
+        const membersInput = input.text.split(' ');
+        const validation = await this.validator.validate(membersInput, this.step);
+        if (!validation.valid) {
+            await this.sender.sendMessage(input.chatId, validation.error!);
+            return;
+        }
+        state.data.members = membersInput;
 
         this.logger.debug('State: ', state);
 

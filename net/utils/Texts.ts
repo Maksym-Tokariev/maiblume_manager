@@ -26,6 +26,11 @@ export class Texts {
             'Но сперва нужно начать диалог со мной https://t.me/MaiblumeManagerBot',
     }
 
+    public static validation = {
+        invalidName: 'Некорректный формат времени',
+        invalidUsername: 'Имя пользователя должно включать `@`'
+    }
+
     public static notifyAboutMeetPrivate(meet: Meeting) {
         return 'Вы были приглашены на собрание' + this.meetMarkupText(meet);
     }

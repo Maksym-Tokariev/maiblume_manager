@@ -1,5 +1,5 @@
 import {Logger} from "../utils/Logger";
-import {Collection, Db, DeleteResult, MongoClient, UpdateResult, WithId} from "mongodb";
+import {Collection, Db, MongoClient} from "mongodb";
 import {Meeting} from "../models/Meeting";
 
 
@@ -21,6 +21,10 @@ export class MongoService {
             await this.client.connect();
             this.db = this.client.db(this.dbName);
             this.meetings = this.db.collection<Meeting>('meetings');
+            await this.meetings.createIndex(
+                {date: 1},
+                {expireAfterSeconds: 0}
+            );
 
             this.logger.info("Successful connection to the DB ");
         } catch (err: any) {

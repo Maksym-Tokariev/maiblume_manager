@@ -11,6 +11,7 @@ import {DescStep} from "./DescStep";
 import {ConfirmStep} from "./ConfirmStep";
 import {CloseFlowStep} from "./CloseFlowStep";
 import {MongoService} from "../../MongoService";
+import {ValidationService} from "../validation/ValidationService";
 
 export class StepManager {
     private readonly logger = new Logger(StepManager.name);
@@ -19,12 +20,13 @@ export class StepManager {
     constructor(
         private state: StateManager,
         private sender: MessageSender,
-        private mongo: MongoService
+        private mongo: MongoService,
+        private validator: ValidationService
     ) {
         this.handlers.add(new DateStep(this.sender, this.state));
         this.handlers.add(new TimeStep(this.state, this.sender));
-        this.handlers.add(new MembersStep(this.state, this.sender));
-        this.handlers.add(new DescStep(this.state, this.sender));
+        this.handlers.add(new MembersStep(this.state, this.sender, this.validator));
+        this.handlers.add(new DescStep(this.state, this.sender, this.validator));
         this.handlers.add(new ConfirmStep(this.state, this.sender));
         this.handlers.add(new CloseFlowStep(this.state, this.sender, this.mongo));
     }

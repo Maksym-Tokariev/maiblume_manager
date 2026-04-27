@@ -28,7 +28,6 @@ export class ServiceContainer {
     private readonly flow: FlowService;
     private readonly validator: ValidationService;
     private readonly strategyFactory: StrategyFactory;
-    private readonly meet: MeetManager;
     private readonly groupManager;
     private readonly notificator: Notificator;
 
@@ -44,8 +43,7 @@ export class ServiceContainer {
 
         this.sender = new MessageSender(this.bot);
         this.notificator = new Notificator(this.sender);
-        this.meet = new MeetManager(this.notificator);
-        this.step = new StepManager(this.state, this.sender, this.mongoService);
+        this.step = new StepManager(this.state, this.sender, this.mongoService, this.validator);
         this.flow = new FlowService(this.sender, this.state, this.step, this.validator);
         this.strategyFactory = new StrategyFactory(this.strategies);
         this.eventFactory = new EventFactory(this.eventManager, this.state, this.flow, this.strategyFactory);

@@ -5,6 +5,7 @@ import {IInputSource} from "../interfaces/IInputSource";
 import {Logger} from "../../../utils/Logger";
 import {StateManager} from "../StateManager";
 import {MessageSender} from "../MessageSender";
+import {ValidationService} from "../validation/ValidationService";
 
 export class MembersStep implements IStepHandler {
     step: CreateFlowSteps = CreateFlowSteps.MEMBERS;
@@ -12,8 +13,10 @@ export class MembersStep implements IStepHandler {
 
     constructor(
         private state: StateManager,
-        private sender: MessageSender
-    ) {}
+        private sender: MessageSender,
+        private validator: ValidationService
+    ) {
+    }
 
     async handle(
         userId: number,
@@ -23,6 +26,11 @@ export class MembersStep implements IStepHandler {
     ) {
         if (!input.text) {
             this.logger.warn('Input data is undefined: ', input.data);
+            return;
+        }
+        const validation = await this.validator.validate(input.text, this.step);
+        if (!validation.valid) {
+            await this.sender.sendMessage(input.chatId, validation.error!);
             return;
         }
         state.data.time = input.text;
