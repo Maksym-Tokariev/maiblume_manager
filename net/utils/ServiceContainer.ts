@@ -34,15 +34,15 @@ export class ServiceContainer {
     constructor(bot: Bot) {
         this.bot = bot.getTelegramBot();
 
-        this.mongoService = new MongoService(appConfig.mongo.uri, appConfig.mongo.dbName);
-
         this.eventManager = new EventManager();
+
         this.state = new StateManager();
         this.groupManager = new GroupManager();
         this.validator = new ValidationService();
-
         this.sender = new MessageSender(this.bot);
+
         this.notificator = new Notificator(this.sender);
+        this.mongoService = new MongoService(appConfig.mongo.uri, appConfig.mongo.dbName, this.notificator);
         this.step = new StepManager(this.state, this.sender, this.mongoService, this.validator);
         this.flow = new FlowService(this.sender, this.state, this.step, this.validator);
         this.strategyFactory = new StrategyFactory(this.strategies);

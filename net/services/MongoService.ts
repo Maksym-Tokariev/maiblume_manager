@@ -1,6 +1,7 @@
 import {Logger} from "../utils/Logger";
 import {Collection, Db, MongoClient} from "mongodb";
 import {Meeting} from "../models/Meeting";
+import {Notificator} from "./Notificator";
 
 
 export class MongoService {
@@ -11,7 +12,8 @@ export class MongoService {
 
     constructor(
         uri: string,
-        private dbName: string
+        private dbName: string,
+        private notificator: Notificator
     ) {
         this.client = new MongoClient(uri);
     }
@@ -41,6 +43,7 @@ export class MongoService {
     public async insert(meet: Meeting) {
         if (!this.meetings) throw new Error('No meetings collection');
         await this.meetings.insertOne(meet);
+        await this.notificator.notifyInGroup(meet);
     }
 
     public async deleteById(meetId: string) {
