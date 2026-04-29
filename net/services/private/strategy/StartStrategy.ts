@@ -4,12 +4,16 @@ import TelegramBot from "node-telegram-bot-api";
 import {MessageSender} from "../MessageSender";
 import {Texts} from "../../../utils/Texts";
 import {membersId} from "../../../config/Members";
+import {MongoMemberService} from "../../MongoMemberService";
+import {Logger} from "../../../utils/Logger";
 
 export class StartStrategy extends BaseStrategy {
+    private readonly logger = new Logger(StartStrategy.name);
 
     constructor(
         bot: TelegramBot,
-        private sender: MessageSender
+        private sender: MessageSender,
+        private mongo: MongoMemberService
     ) {
         super(bot);
     }
@@ -20,7 +24,11 @@ export class StartStrategy extends BaseStrategy {
            Texts.startText
        );
 
-       membersId.set('@' + input.from!.username!, input.userId!);
+       if (!input.from) {
+           this.logger.warn('User is undefined');
+           return;
+       }
+       await this.mongo.insert(input.from);
     }
 
     async canHandle(event: IInputSource): Promise<Optional<boolean>> {

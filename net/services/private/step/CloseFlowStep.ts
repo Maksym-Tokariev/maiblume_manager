@@ -4,7 +4,7 @@ import {State} from "../../../models/State";
 import {IInputSource} from "../interfaces/IInputSource";
 import {StateManager} from "../StateManager";
 import {MessageSender} from "../MessageSender";
-import {MongoService} from "../../MongoService";
+import {MongoMeetService} from "../../MongoMeetService";
 
 export class CloseFlowStep implements IStepHandler {
     step: CreateFlowSteps = CreateFlowSteps.CLOSE_FLOW;
@@ -12,7 +12,7 @@ export class CloseFlowStep implements IStepHandler {
     constructor(
         private state: StateManager,
         private sender: MessageSender,
-        private mongo: MongoService
+        private mongo: MongoMeetService
     ) {}
 
     async handle(

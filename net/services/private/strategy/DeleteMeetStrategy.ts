@@ -4,7 +4,7 @@ import TelegramBot from "node-telegram-bot-api";
 import {MessageSender} from "../MessageSender";
 import {Logger} from "../../../utils/Logger";
 import {Texts} from "../../../utils/Texts";
-import {MongoService} from "../../MongoService";
+import {MongoMeetService} from "../../MongoMeetService";
 
 export class DeleteMeetStrategy extends BaseStrategy {
     private readonly logger = new Logger(DeleteMeetStrategy.name);
@@ -12,7 +12,7 @@ export class DeleteMeetStrategy extends BaseStrategy {
     constructor(
         bot: TelegramBot,
         private sender: MessageSender,
-        private mongo: MongoService
+        private mongo: MongoMeetService
     ) {
         super(bot);
     }

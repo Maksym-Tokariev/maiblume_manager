@@ -8,7 +8,8 @@ import {ShowCurrMeetsStrategy} from "./ShowCurrMeetsStrategy";
 import {MessageSender} from "../MessageSender";
 import {DeleteMeetStrategy} from "./DeleteMeetStrategy";
 import {StartStrategy} from "./StartStrategy";
-import {MongoService} from "../../MongoService";
+import {MongoMeetService} from "../../MongoMeetService";
+import {MongoMemberService} from "../../MongoMemberService";
 
 export class StrategyRegistry {
     private readonly _strategies: Set<IStrategy> = new Set<IStrategy>();
@@ -18,21 +19,21 @@ export class StrategyRegistry {
         private state: StateManager,
         private step: StepManager,
         private flow: FlowService,
-        private mongo: MongoService,
-        private sender: MessageSender
-
+        private mongoMeetService: MongoMeetService,
+        private sender: MessageSender,
+        private mongoMemberService: MongoMemberService
     ) {
         this._strategies.add(
             new InitCreateMeetFlow(bot, this.state, this.step, this.flow)
         );
         this._strategies.add(
-          new ShowCurrMeetsStrategy(bot, this.mongo, this.sender)
+          new ShowCurrMeetsStrategy(bot, this.mongoMeetService, this.sender)
         );
         this._strategies.add(
-            new DeleteMeetStrategy(bot, this.sender, this.mongo)
+            new DeleteMeetStrategy(bot, this.sender, this.mongoMeetService)
         );
         this._strategies.add(
-            new StartStrategy(bot, this.sender)
+            new StartStrategy(bot, this.sender, this.mongoMemberService)
         );
     }
 

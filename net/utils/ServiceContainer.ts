@@ -12,12 +12,14 @@ import {StrategyRegistry} from "../services/private/strategy/StrategyRegistry";
 import {StrategyFactory} from "../services/private/strategy/StrategyFactory";
 import {GroupManager} from "../services/group/GroupManager";
 import {Notificator} from "../services/Notificator";
-import {MongoService} from "../services/MongoService";
+import {MongoMeetService} from "../services/MongoMeetService";
 import {appConfig} from "../config/AppConfig";
+import {MongoMemberService} from "../services/MongoMemberService";
 
 export class ServiceContainer {
     private readonly bot: TelegramBot;
-    private readonly mongoService: MongoService;
+    private readonly mongoMeetService: MongoMeetService;
+    private readonly mongoMemberService: MongoMemberService;
     private readonly inputListener: InputListener;
     private readonly eventFactory: EventFactory;
     private readonly eventManager: EventManager;
@@ -39,10 +41,11 @@ export class ServiceContainer {
         this.groupManager = new GroupManager();
         this.validator = new ValidationService();
         this.sender = new MessageSender(this.bot);
+        this.mongoMemberService = new MongoMemberService(appConfig.mongo.uri, appConfig.mongo.dbName);
 
         this.notificator = new Notificator(this.sender);
-        this.mongoService = new MongoService(appConfig.mongo.uri, appConfig.mongo.dbName, this.notificator);
-        this.step = new StepManager(this.state, this.sender, this.mongoService, this.validator);
+        this.mongoMeetService = new MongoMeetService(appConfig.mongo.uri, appConfig.mongo.dbName, this.notificator);
+        this.step = new StepManager(this.state, this.sender, this.mongoMeetService, this.validator);
         this.flow = new FlowService(this.sender, this.state, this.step, this.validator);
         this.strategyFactory = new StrategyFactory(this.strategies);
         this.eventFactory = new EventFactory(this.eventManager, this.state, this.flow, this.strategyFactory);
@@ -53,8 +56,12 @@ export class ServiceContainer {
         return this.inputListener;
     }
 
-    get mongo(): MongoService {
-        return this.mongoService;
+    get mongoMeet(): MongoMeetService {
+        return this.mongoMeetService;
+    }
+
+    get mongoMember(): MongoMemberService {
+        return this.mongoMemberService;
     }
 
     private get strategies() {
@@ -63,8 +70,9 @@ export class ServiceContainer {
             this.state,
             this.step,
             this.flow,
-            this.mongoService,
-            this.sender
+            this.mongoMeetService,
+            this.sender,
+            this.mongoMemberService
         ).strategies;
     }
 }

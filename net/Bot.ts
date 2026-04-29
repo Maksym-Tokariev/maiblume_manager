@@ -41,24 +41,27 @@ export class Bot {
     }
 
     public async start(): Promise<void> {
-        this.container
-            .mongo
-            .connect()
-            .then(() =>
-                this.logger.info('A connection to the database has been established')
-            );
+        await this.container
+            .mongoMeet
+            .connect();
+
+        await this.container
+            .mongoMember
+            .connect();
     }
 
     public async stop(): Promise<void> {
         if (this.bot.isPolling()) {
             await this.bot.stopPolling();
         }
-        this.container
-            .mongo
-            .disconnect()
-            .then(() =>
-                this.logger.info('The connection to the database has been terminated')
-            );
+        await this.container
+            .mongoMember
+            .disconnect();
+
+        await this.container
+            .mongoMeet
+            .disconnect();
+
         this.logger.info("Bot stopped");
     }
 

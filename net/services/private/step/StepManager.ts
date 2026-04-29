@@ -10,7 +10,7 @@ import {MembersStep} from "./MembersStep";
 import {DescStep} from "./DescStep";
 import {ConfirmStep} from "./ConfirmStep";
 import {CloseFlowStep} from "./CloseFlowStep";
-import {MongoService} from "../../MongoService";
+import {MongoMeetService} from "../../MongoMeetService";
 import {ValidationService} from "../validation/ValidationService";
 
 export class StepManager {
@@ -20,7 +20,7 @@ export class StepManager {
     constructor(
         private state: StateManager,
         private sender: MessageSender,
-        private mongo: MongoService,
+        private mongo: MongoMeetService,
         private validator: ValidationService
     ) {
         this.handlers.add(new DateStep(this.sender, this.state));
