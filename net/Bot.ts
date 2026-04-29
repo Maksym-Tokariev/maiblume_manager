@@ -3,30 +3,33 @@ import {appConfig} from "./config/AppConfig";
 import {Logger} from "./utils/Logger";
 import {ServiceContainer} from "./utils/ServiceContainer";
 import {CommandRegistry} from "./utils/CommandRegistry";
+import {aws4Sign} from "mongodb/src/cmap/auth/aws4";
 
 
 export class Bot {
     private readonly bot: TelegramBot;
-    private readonly container: ServiceContainer;
     private readonly logger = new Logger(Bot.name);
 
-    public constructor() {
+    public constructor(
+        private readonly container: ServiceContainer
+    ) {
         this.bot = new TelegramBot(appConfig.token, {polling: true});
-        this.container = new ServiceContainer(this);
-
-        this.initialize();
     }
 
-    private initialize(): void {
+    public async start(): Promise<void> {
+        await this.initialize();
+    }
+
+    private async initialize() {
         this.logger.debug("Start initializing");
         try {
-            new CommandRegistry(this.getTelegramBot());
+            new CommandRegistry(this.bot);
             this.setupErrorHandling();
-            this.setupMessageListener();
-            this.logger.debug("Successful initialization")
-        } catch (err) {
-            this.logger.error("Initializing error: ");
-            this.stop();
+            await this.setupMessageListener();
+            this.logger.debug("Successful initialization");
+        } catch (err: any) {
+            this.logger.error("Initializing error: ", err.message);
+            await this.stop();
         }
     }
 
@@ -36,31 +39,14 @@ export class Bot {
         });
     }
 
-    private setupMessageListener(): void {
-        this.container.listener.listen();
-    }
-
-    public async start(): Promise<void> {
-        await this.container
-            .mongoMeet
-            .connect();
-
-        await this.container
-            .mongoMember
-            .connect();
+    private async setupMessageListener() {
+        await this.container.listener.listen();
     }
 
     public async stop(): Promise<void> {
         if (this.bot.isPolling()) {
             await this.bot.stopPolling();
         }
-        await this.container
-            .mongoMember
-            .disconnect();
-
-        await this.container
-            .mongoMeet
-            .disconnect();
 
         this.logger.info("Bot stopped");
     }

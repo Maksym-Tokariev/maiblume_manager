@@ -13,11 +13,13 @@ import {StrategyFactory} from "../services/private/strategy/StrategyFactory";
 import {GroupManager} from "../services/group/GroupManager";
 import {Notificator} from "../services/Notificator";
 import {MongoMeetService} from "../services/mongo/MongoMeetService";
-import {appConfig} from "../config/AppConfig";
 import {MongoMemberService} from "../services/mongo/MongoMemberService";
+import {MongoConnection} from "../services/mongo/MongoConnection";
 
 export class ServiceContainer {
-    private readonly bot: TelegramBot;
+    private readonly telegramBot: TelegramBot;
+    private readonly bot: Bot;
+    private readonly mConnector: MongoConnection;
     private readonly mongoMeetService: MongoMeetService;
     private readonly mongoMemberService: MongoMemberService;
     private readonly inputListener: InputListener;
@@ -32,41 +34,42 @@ export class ServiceContainer {
     private readonly groupManager;
     private readonly notificator: Notificator;
 
-    constructor(bot: Bot) {
-        this.bot = bot.getTelegramBot();
+    constructor(connector: MongoConnection) {
+        this.mConnector = connector;
+        this.bot = new Bot(this);
+        this.telegramBot = this.bot.getTelegramBot()
 
         this.eventManager = new EventManager();
-
         this.state = new StateManager();
         this.groupManager = new GroupManager();
         this.validator = new ValidationService();
-        this.sender = new MessageSender(this.bot);
-        this.mongoMemberService = new MongoMemberService(appConfig.mongo.uri, appConfig.mongo.dbName);
 
+        this.sender = new MessageSender(this.telegramBot);
+        this.mongoMemberService = new MongoMemberService(connector.getDb());
         this.notificator = new Notificator(this.sender);
-        this.mongoMeetService = new MongoMeetService(appConfig.mongo.uri, appConfig.mongo.dbName, this.notificator);
+        this.mongoMeetService = new MongoMeetService(connector.getDb(), this.notificator);
         this.step = new StepManager(this.state, this.sender, this.mongoMeetService, this.validator);
         this.flow = new FlowService(this.sender, this.state, this.step, this.validator);
         this.strategyFactory = new StrategyFactory(this.strategies);
         this.eventFactory = new EventFactory(this.eventManager, this.state, this.flow, this.strategyFactory);
-        this.inputListener = new InputListener(this.bot, this.eventFactory, this.groupManager);
+        this.inputListener = new InputListener(this.telegramBot, this.eventFactory, this.groupManager);
+    }
+
+    get myBot(): Bot {
+        return this.bot;
     }
 
     get listener(): InputListener {
         return this.inputListener;
     }
 
-    get mongoMeet(): MongoMeetService {
-        return this.mongoMeetService;
-    }
-
-    get mongoMember(): MongoMemberService {
-        return this.mongoMemberService;
+    get connector() {
+        return this.mConnector;
     }
 
     private get strategies() {
         return new StrategyRegistry(
-            this.bot,
+            this.telegramBot,
             this.state,
             this.step,
             this.flow,

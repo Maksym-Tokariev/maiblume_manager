@@ -2,25 +2,15 @@ import {Meeting} from "../../models/Meeting";
 import {Notificator} from "../Notificator";
 import cron from 'node-cron'
 import {MongoBaseService} from "./MongoBaseService";
+import {Db} from "mongodb";
 
 export class MongoMeetService extends MongoBaseService<Meeting>{
     constructor(
-        uri: string,
-        dbName: string,
+        db: Db,
         private notificator: Notificator
     ) {
-        super(uri, dbName, 'meetings', MongoMeetService.name);
-    }
-
-    public async connect() {
-        try {
-            super.connect().then(() => this.logger.info('Connection established'));
-            cron.schedule("*/10 * * * * *", () => this.checkMeetings(this));
-            this.logger.info("Successful connection to the DB");
-        } catch (err: any) {
-            this.logger.error(err.message, err.stack);
-            throw err;
-        }
+        super(db,'meetings', MongoMeetService.name);
+        cron.schedule("*/10 * * * * *", () => this.checkMeetings(this));
     }
 
     public async insert(meet: Meeting) {

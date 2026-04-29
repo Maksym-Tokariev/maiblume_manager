@@ -1,12 +1,12 @@
 import TelegramBot from "node-telegram-bot-api";
 import {MongoBaseService} from "./MongoBaseService";
+import {Db} from "mongodb";
 
 export class MongoMemberService extends MongoBaseService<TelegramBot.User>{
     constructor(
-        uri: string,
-        dbName: string
+        db: Db
     ) {
-        super(uri, dbName, 'members', MongoMemberService.name);
+        super(db,'members', MongoMemberService.name);
     }
 
     public async insert(user: TelegramBot.User) {
