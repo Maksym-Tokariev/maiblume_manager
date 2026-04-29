@@ -8,8 +8,8 @@ import {ShowCurrMeetsStrategy} from "./ShowCurrMeetsStrategy";
 import {MessageSender} from "../MessageSender";
 import {DeleteMeetStrategy} from "./DeleteMeetStrategy";
 import {StartStrategy} from "./StartStrategy";
-import {MongoMeetService} from "../../MongoMeetService";
-import {MongoMemberService} from "../../MongoMemberService";
+import {MongoMeetService} from "../../mongo/MongoMeetService";
+import {MongoMemberService} from "../../mongo/MongoMemberService";
 
 export class StrategyRegistry {
     private readonly _strategies: Set<IStrategy> = new Set<IStrategy>();

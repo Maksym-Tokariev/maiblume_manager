@@ -4,7 +4,7 @@ import {State} from "../../../models/State";
 import {IInputSource} from "../interfaces/IInputSource";
 import {StateManager} from "../StateManager";
 import {MessageSender} from "../MessageSender";
-import {MongoMeetService} from "../../MongoMeetService";
+import {MongoMeetService} from "../../mongo/MongoMeetService";
 
 export class CloseFlowStep implements IStepHandler {
     step: CreateFlowSteps = CreateFlowSteps.CLOSE_FLOW;

@@ -4,7 +4,7 @@ import TelegramBot from "node-telegram-bot-api";
 import {MessageSender} from "../MessageSender";
 import {Texts} from "../../../utils/Texts";
 import {membersId} from "../../../config/Members";
-import {MongoMemberService} from "../../MongoMemberService";
+import {MongoMemberService} from "../../mongo/MongoMemberService";
 import {Logger} from "../../../utils/Logger";
 
 export class StartStrategy extends BaseStrategy {

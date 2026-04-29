@@ -4,7 +4,7 @@ import TelegramBot from "node-telegram-bot-api";
 import {MessageSender} from "../MessageSender";
 import {Meeting} from "../../../models/Meeting";
 import {Texts} from "../../../utils/Texts";
-import {MongoMeetService} from "../../MongoMeetService";
+import {MongoMeetService} from "../../mongo/MongoMeetService";
 
 export class ShowCurrMeetsStrategy extends BaseStrategy {
     constructor(

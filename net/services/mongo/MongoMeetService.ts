@@ -1,5 +1,5 @@
-import {Meeting} from "../models/Meeting";
-import {Notificator} from "./Notificator";
+import {Meeting} from "../../models/Meeting";
+import {Notificator} from "../Notificator";
 import cron from 'node-cron'
 import {MongoBaseService} from "./MongoBaseService";
 

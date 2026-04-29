@@ -12,9 +12,9 @@ import {StrategyRegistry} from "../services/private/strategy/StrategyRegistry";
 import {StrategyFactory} from "../services/private/strategy/StrategyFactory";
 import {GroupManager} from "../services/group/GroupManager";
 import {Notificator} from "../services/Notificator";
-import {MongoMeetService} from "../services/MongoMeetService";
+import {MongoMeetService} from "../services/mongo/MongoMeetService";
 import {appConfig} from "../config/AppConfig";
-import {MongoMemberService} from "../services/MongoMemberService";
+import {MongoMemberService} from "../services/mongo/MongoMemberService";
 
 export class ServiceContainer {
     private readonly bot: TelegramBot;

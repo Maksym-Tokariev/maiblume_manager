@@ -1,5 +1,5 @@
 import {Collection, Db, Document, MongoClient} from "mongodb";
-import {Logger} from "../utils/Logger";
+import {Logger} from "../../utils/Logger";
 
 export abstract class MongoBaseService<T extends Document> {
     protected readonly logger: Logger;

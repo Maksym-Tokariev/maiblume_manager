@@ -10,7 +10,7 @@ import {MembersStep} from "./MembersStep";
 import {DescStep} from "./DescStep";
 import {ConfirmStep} from "./ConfirmStep";
 import {CloseFlowStep} from "./CloseFlowStep";
-import {MongoMeetService} from "../../MongoMeetService";
+import {MongoMeetService} from "../../mongo/MongoMeetService";
 import {ValidationService} from "../validation/ValidationService";
 
 export class StepManager {
