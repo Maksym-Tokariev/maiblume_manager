@@ -36,7 +36,7 @@ export class ValidationService {
     private async validateMembers(members: string[]): Promise<ValidationDTO> {
         for (const member of members) {
             if (!member.startsWith('@'))
-                return {valid: false, error: Texts.validation.invalidUsername}
+                return {valid: false, error: Texts.validation.invalidUsername};
         }
         return { valid: true, value: { members: members }};
     }

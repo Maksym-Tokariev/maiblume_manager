@@ -1,7 +1,6 @@
 import {BaseStrategy} from "./BaseStrategy";
 import {IInputSource} from "../interfaces/IInputSource";
 import TelegramBot from "node-telegram-bot-api";
-import {MeetManager} from "../MeetManager";
 import {MessageSender} from "../MessageSender";
 import {Meeting} from "../../../models/Meeting";
 import {Texts} from "../../../utils/Texts";

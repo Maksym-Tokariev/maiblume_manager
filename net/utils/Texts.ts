@@ -32,7 +32,7 @@ export class Texts {
     }
 
     public static notifyAboutMeetPrivate(meet: Meeting) {
-        return 'Вы были приглашены на собрание' + this.meetMarkupText(meet);
+        return 'Вы были приглашены на собрание\n' + this.meetMarkupText(meet);
     }
 
     public static notifyAboutMeetGroup(meet: Meeting) {
@@ -49,9 +49,9 @@ export class Texts {
             : '-'
 
         return `Дата: ${meet.date.toDateString()}\n` +
-            `Время: ${meet.time}\n` +
-            `Учасники: ${members}\n` +
-            `Описание: ${meet.description ?? ''}\n` +
-            `Кем создано: ${meet.createdBy ?? 'unknown'}`
+                `Время: ${meet.time}\n` +
+                `Учасники: ${members}\n` +
+                `Описание: ${meet.description ?? ''}\n` +
+                `Кем создано: ${meet.createdBy ?? 'unknown'}`;
     }
 }

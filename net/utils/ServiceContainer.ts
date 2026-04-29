@@ -10,7 +10,6 @@ import {FlowService} from "../services/private/flow/FlowService";
 import {ValidationService} from "../services/private/validation/ValidationService";
 import {StrategyRegistry} from "../services/private/strategy/StrategyRegistry";
 import {StrategyFactory} from "../services/private/strategy/StrategyFactory";
-import {MeetManager} from "../services/private/MeetManager";
 import {GroupManager} from "../services/group/GroupManager";
 import {Notificator} from "../services/Notificator";
 import {MongoService} from "../services/MongoService";
