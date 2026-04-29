@@ -9,7 +9,10 @@ export class MongoGroupService extends MongoBaseService<Group> {
         super(db,'groups', MongoGroupService.name);
     }
 
-    public async insert(title: string, groupId: number) {
+    public async insert(title: Optional<string>, groupId: number) {
+        if (!title) {
+            title = 'Unknown';
+        }
         return await this.getCollection().insertOne({ title: title, groupId: groupId});
     }
 

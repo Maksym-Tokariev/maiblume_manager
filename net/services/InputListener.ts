@@ -2,7 +2,7 @@ import TelegramBot, {CallbackQuery, Message} from "node-telegram-bot-api";
 import {Logger} from "../utils/Logger";
 import {EventFactory} from "./private/event/EventFactory";
 import {Texts} from "../utils/Texts";
-import {GroupManager} from "./group/GroupManager";
+import {MongoGroupService} from "./mongo/MongoGroupService";
 
 export class InputListener {
     private readonly logger = new Logger(InputListener.name);
@@ -10,7 +10,7 @@ export class InputListener {
     constructor(
         private readonly bot: TelegramBot,
         private eventFactory: EventFactory,
-        private group: GroupManager
+        private mongo: MongoGroupService
     ) {
         this.logger.info("InputListener has been initialized");
     }
@@ -28,7 +28,7 @@ export class InputListener {
                     msg.chat.id,
                     Texts.group.invite
                 );
-                await this.group.addGroup(msg.chat.title, msg.chat.id);
+                await this.mongo.insert(msg.chat.title, msg.chat.id);
             }
         });
         this.bot.on('message', async (msg) => {
@@ -48,7 +48,7 @@ export class InputListener {
 
             if (newStatus === 'left' || newStatus === 'kicked') {
                 this.logger.info('The bot was removed from a group');
-                this.group.deleteGroup(chatId);
+                await this.mongo.delete(chatId);
             }
         });
     }

@@ -23,7 +23,8 @@ export class Texts {
 
     public static group = {
         invite: 'Привет! Моя цель создавать собрания, задачи и многое другое.\n' +
-            'Но сперва нужно начать диалог со мной https://t.me/MaiblumeManagerBot',
+            'Но сперва нужно начать диалог со мной https://t.me/MaiblumeManagerBot\n' +
+            'И наче, я не смогу с вами связыватся',
     }
 
     public static validation = {
