@@ -35,7 +35,8 @@ export class DescStep implements IStepHandler {
             await this.sender.sendMessage(input.chatId, validation.error!);
             return;
         }
-        state.data.members = membersInput;
+        state.data.members = membersInput.map(member =>
+            member.startsWith('@') ? member.slice(1) : member);
 
         this.logger.debug('State: ', state);
 

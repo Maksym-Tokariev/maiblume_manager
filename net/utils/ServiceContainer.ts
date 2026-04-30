@@ -46,7 +46,7 @@ export class ServiceContainer {
         this.mongoMemberService = new MongoMemberService(connector.getDb());
 
         this.sender = new MessageSender(this.telegramBot);
-        this.notificator = new Notificator(this.sender);
+        this.notificator = new Notificator(this.sender, this.mongoMemberService);
         this.mongoMeetService = new MongoMeetService(connector.getDb(), this.notificator);
         this.step = new StepManager(this.state, this.sender, this.mongoMeetService, this.validator);
         this.flow = new FlowService(this.sender, this.state, this.step, this.validator);

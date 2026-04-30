@@ -1,14 +1,14 @@
-
 import {Meeting} from "../models/Meeting";
 import {MessageSender} from "./private/MessageSender";
 import {Texts} from "../utils/Texts";
-import {membersId} from "../config/Members";
 import {Logger} from "../utils/Logger";
+import {MongoMemberService} from "./mongo/MongoMemberService";
 
 export class Notificator {
     private readonly logger = new Logger(Notificator.name);
     constructor(
-        private sender: MessageSender
+        private sender: MessageSender,
+        private mongo: MongoMemberService
     ) {}
 
     public async notifyInGroup(meet: Meeting) {
@@ -18,10 +18,12 @@ export class Notificator {
 
     public async notifyInPrivate(meet: Meeting) {
         const members = meet.members;
+        const allMembers = await this.mongo.getAllMembers();
 
+        const dbUsernames = new Set(allMembers.map(u => u.username));
         for (const member of members) {
-            if (!membersId.get(member)) continue;
-            await this.sender.sendMessage(membersId.get(member), Texts.notifyAboutMeetPrivate(meet));
+            if (!dbUsernames.has(member)) continue;
+            await this.sender.sendMessage(this.mongo.findByUsername(member), Texts.notifyAboutMeetPrivate(meet));
         }
     }
 
