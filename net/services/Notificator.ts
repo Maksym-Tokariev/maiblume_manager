@@ -18,11 +18,16 @@ export class Notificator {
 
     public async notifyInPrivate(meet: Meeting) {
         const members = meet.members;
-        const allMembers = await this.mongo.getAllMembers();
+        this.logger.debug('Members ', members);
+        const users = await this.mongo.getAllMembers();
+        this.logger.debug('Users ', users);
 
-        const dbUsernames = new Set(allMembers.map(u => u.username));
+
+        const dbUsernames = new Set(users.map(u => u.username));
+        this.logger.debug('DB usernames ', dbUsernames);
         for (const member of members) {
             if (!dbUsernames.has(member)) continue;
+            this.logger.debug('Notify user: ', member);
             await this.sender.sendMessage(this.mongo.findByUsername(member), Texts.notifyAboutMeetPrivate(meet));
         }
     }
