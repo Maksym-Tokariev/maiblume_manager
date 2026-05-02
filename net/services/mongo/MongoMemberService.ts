@@ -1,23 +1,24 @@
-import TelegramBot from "node-telegram-bot-api";
 import {MongoBaseService} from "./MongoBaseService";
 import {Db} from "mongodb";
+import {Member} from "../../models/Member";
 
-export class MongoMemberService extends MongoBaseService<TelegramBot.User>{
+export class MongoMemberService extends MongoBaseService<Member>{
     constructor(
         db: Db
     ) {
         super(db,'members', MongoMemberService.name);
     }
 
-    public async insert(user: TelegramBot.User) {
+    public async insert(user: Member) {
         return this.getCollection().insertOne(user);
     }
 
     public async findByUsername(username: string) {
+        this.logger.debug('Looking for user ', username);
         return this.getCollection().findOne({username: username});
     }
 
-    public async getAllMembers(): Promise<TelegramBot.User[]> {
+    public async getAllMembers(): Promise<Member[]> {
         return this.getCollection().find().toArray();
     }
 

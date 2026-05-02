@@ -1,6 +1,6 @@
 import {Meeting} from "../models/Meeting";
 
-export class Texts {
+export class TextsRu {
     public static readonly startText: string = 'Привет, я помогу запланировать:\n ' +
         'Запланировать собрание /create_meet\n ' +
         'Просмотреть предстоящие собрания /meetings\n ' +
@@ -18,7 +18,8 @@ export class Texts {
     public static meet = {
         remove: 'Собрание успешно удалено',
         cancel: 'Собрание отменено',
-        empty: 'Нет активных собраний'
+        empty: 'Нет активных собраний',
+        start: 'Собрание началось',
     }
 
     public static group = {
@@ -30,6 +31,11 @@ export class Texts {
     public static validation = {
         invalidName: 'Некорректный формат времени',
         invalidUsername: 'Имя пользователя должно включать `@`'
+    }
+
+    public static startsIn15(members: string[]) {
+        const corrMembers = members.map(m => '@' + m).join(' ');
+        return `Собрание начнётся через 15 мин. Учасники: ${corrMembers}`;
     }
 
     public static notifyAboutMeetPrivate(meet: Meeting) {
@@ -46,9 +52,8 @@ export class Texts {
 
     public static meetMarkupText(meet: Meeting): string {
         const members = meet.members.length
-            ? meet.members.join(' ')
+            ? meet.members.map(m => '@' + m).join(' ')
             : '-'
-
         return `Дата: ${meet.date.toDateString()}\n` +
                 `Время: ${meet.time}\n` +
                 `Учасники: ${members}\n` +

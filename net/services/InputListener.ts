@@ -1,7 +1,7 @@
 import TelegramBot, {CallbackQuery, Message} from "node-telegram-bot-api";
 import {Logger} from "../utils/Logger";
 import {EventFactory} from "./private/event/EventFactory";
-import {Texts} from "../utils/Texts";
+import {TextsRu} from "../utils/TextsRu";
 import {MongoGroupService} from "./mongo/MongoGroupService";
 
 export class InputListener {
@@ -26,7 +26,7 @@ export class InputListener {
             if (botItself) {
                 await this.bot.sendMessage(
                     msg.chat.id,
-                    Texts.group.invite
+                    TextsRu.group.invite
                 );
                 await this.mongo.insert(msg.chat.title, msg.chat.id);
             }

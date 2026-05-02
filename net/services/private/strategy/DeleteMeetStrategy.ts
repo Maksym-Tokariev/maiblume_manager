@@ -3,7 +3,7 @@ import {IInputSource} from "../interfaces/IInputSource";
 import TelegramBot from "node-telegram-bot-api";
 import {MessageSender} from "../MessageSender";
 import {Logger} from "../../../utils/Logger";
-import {Texts} from "../../../utils/Texts";
+import {TextsRu} from "../../../utils/TextsRu";
 import {MongoMeetService} from "../../mongo/MongoMeetService";
 
 export class DeleteMeetStrategy extends BaseStrategy {
@@ -21,7 +21,7 @@ export class DeleteMeetStrategy extends BaseStrategy {
         const meetId = input.data!.substring(7, input.data!.length);
         await this.mongo.deleteById(meetId);
 
-        await this.sender.sendMessage(input.chatId, Texts.meet.remove);
+        await this.sender.sendMessage(input.chatId, TextsRu.meet.remove);
         await this.answerQuery(input);
     }
 

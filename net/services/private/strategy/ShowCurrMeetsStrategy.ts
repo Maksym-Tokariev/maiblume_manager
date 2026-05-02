@@ -3,7 +3,7 @@ import {IInputSource} from "../interfaces/IInputSource";
 import TelegramBot from "node-telegram-bot-api";
 import {MessageSender} from "../MessageSender";
 import {Meeting} from "../../../models/Meeting";
-import {Texts} from "../../../utils/Texts";
+import {TextsRu} from "../../../utils/TextsRu";
 import {MongoMeetService} from "../../mongo/MongoMeetService";
 
 export class ShowCurrMeetsStrategy extends BaseStrategy {
@@ -19,7 +19,7 @@ export class ShowCurrMeetsStrategy extends BaseStrategy {
         const meets = this.mongo.meets;
 
         if (!meets) {
-            await this.sender.sendMessage(input.chatId, Texts.meet.empty);
+            await this.sender.sendMessage(input.chatId, TextsRu.meet.empty);
             return;
         }
 

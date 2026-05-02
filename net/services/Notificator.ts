@@ -1,8 +1,9 @@
 import {Meeting} from "../models/Meeting";
 import {MessageSender} from "./private/MessageSender";
-import {Texts} from "../utils/Texts";
+import {TextsRu} from "../utils/TextsRu";
 import {Logger} from "../utils/Logger";
 import {MongoMemberService} from "./mongo/MongoMemberService";
+import {Member} from "../models/Member";
 
 export class Notificator {
     private readonly logger = new Logger(Notificator.name);
@@ -12,24 +13,40 @@ export class Notificator {
     ) {}
 
     public async notifyInGroup(meet: Meeting) {
-        await this.sender.sendMessage(process.env.GROUP_ID, Texts.notifyAboutMeetGroup(meet));
+        await this.sender.sendMessage(process.env.GROUP_ID, TextsRu.notifyAboutMeetGroup(meet));
         await this.notifyInPrivate(meet);
     }
 
     public async notifyInPrivate(meet: Meeting) {
-        const members = meet.members;
-        this.logger.debug('Members ', members);
-        const users = await this.mongo.getAllMembers();
-        this.logger.debug('Users ', users);
+        const members: string[] = meet.members;
+        const users: Member[] = await this.mongo.getAllMembers();
 
+        for (const user of await this.filterMembers(members, users, meet.createdBy)) {
+            this.logger.debug('Notify user: ', user.username);
 
-        const dbUsernames = new Set(users.map(u => u.username));
-        this.logger.debug('DB usernames ', dbUsernames);
-        for (const member of members) {
-            if (!dbUsernames.has(member)) continue;
-            this.logger.debug('Notify user: ', member);
-            await this.sender.sendMessage(this.mongo.findByUsername(member), Texts.notifyAboutMeetPrivate(meet));
+            if (!user.chatId) {
+                this.logger.debug(`Member ${user.username} has no chatId`);
+                continue;
+            }
+
+            await this.sender.sendMessage(user.chatId, TextsRu.notifyAboutMeetPrivate(meet));
+            this.logger.debug('The user has been notified');
         }
+    }
+
+    private async filterMembers(members: string[], users: Member[], createdBy: string) {
+        const userMap = new Map(users.map(u => [u.username, u]));
+        return members
+            .filter(username => userMap.has(username) && username !== createdBy)
+            .map(username => userMap.get(username)!);
+    }
+
+    public async notifyAboutMeetBefore(members: string[]) {
+        await this.sender.sendMessage(process.env.GROUP_ID, TextsRu.startsIn15(members));
+    }
+
+    public async notifyAboutStartMeet() {
+        await this.sender.sendMessage(process.env.GROUP_ID, TextsRu.meet.start);
     }
 
     public async checkMeetings(upcoming: Meeting[]) {
@@ -44,7 +61,7 @@ export class Notificator {
                 await this.notifyInPrivate(meet);
             }
 
-            if ((meet.date.getDate() === today.getDate()) && diffMin <= 0 && diffMin > -0.5) {
+            if ((meet.date.getDate() === today.getDate()) && diffMin <= 0 && diffMin > -1) {
                 this.logger.debug('Notice of the commencement of the meeting', meet);
                 await this.notifyAboutStartMeet();
             }
@@ -62,13 +79,5 @@ export class Notificator {
         const now = new Date();
         now.setHours(hour, 0, 0, 0,);
         return now;
-    }
-
-    public async notifyAboutMeetBefore(members: string[]) {
-        await this.sender.sendMessage(process.env.GROUP_ID, `Собрание начнётся через 15 мин. Учасники: ${members.join(' ')}`);
-    }
-
-    public async notifyAboutStartMeet() {
-        await this.sender.sendMessage(process.env.GROUP_ID, 'Собрание началось');
     }
 }

@@ -4,7 +4,7 @@ import {CreateFlowSteps} from "../../enums/CreateFlowSteps";
 import {State} from "../../models/State";
 import {Keyboards} from "../../input/Keyboards";
 import {Meeting} from "../../models/Meeting";
-import {Texts} from "../../utils/Texts";
+import {TextsRu} from "../../utils/TextsRu";
 
 export class MessageSender {
     private readonly logger = new Logger(MessageSender.name);
@@ -34,7 +34,7 @@ export class MessageSender {
                 case CreateFlowSteps.DATE:
                     await this.sendMessage(
                         chatId,
-                        Texts.flowTexts.date,
+                        TextsRu.flowTexts.date,
                         {reply_markup: Keyboards.dates}
                     );
                     break;
@@ -42,14 +42,14 @@ export class MessageSender {
                 case CreateFlowSteps.TIME:
                     await this.sendMessage(
                         chatId,
-                        Texts.flowTexts.time
+                        TextsRu.flowTexts.time
                     );
                     break;
 
                 case CreateFlowSteps.MEMBERS:
                     await this.sendMessage(
                         chatId,
-                        Texts.flowTexts.members,
+                        TextsRu.flowTexts.members,
                         {reply_markup: {inline_keyboard: Keyboards.members}}
                     );
                     break;
@@ -57,7 +57,7 @@ export class MessageSender {
                 case CreateFlowSteps.DESCRIPTION:
                     await this.sendMessage(
                         chatId,
-                        Texts.flowTexts.description,
+                        TextsRu.flowTexts.description,
                         {reply_markup: {keyboard: []}}
                     );
                     break;
@@ -65,7 +65,7 @@ export class MessageSender {
                 case CreateFlowSteps.CONFIRM:
                     await this.sendMessage(
                         chatId,
-                        Texts.confirmMarkup(input?.data!),
+                        TextsRu.confirmMarkup(input?.data!),
                         {reply_markup: Keyboards.confirmFlow}
                     )
                     break;
@@ -78,7 +78,7 @@ export class MessageSender {
     async sendFlowComplete(chatId: number) {
         await this.sendMessage(
             chatId,
-            Texts.flowTexts.complete,
+            TextsRu.flowTexts.complete,
             {reply_markup: {keyboard: []}}
         );
     }
@@ -86,14 +86,14 @@ export class MessageSender {
     async sendFlowCancel(userId: number, chatId: number) {
         await this.sendMessage(
             chatId,
-            Texts.meet.cancel
+            TextsRu.meet.cancel
         );
     }
 
     public async sendMeet(chatId: number, meet: Meeting) {
         await this.sendMessage(
             chatId,
-            Texts.meetMarkupText(meet),
+            TextsRu.meetMarkupText(meet),
             {reply_markup: Keyboards.deleteMeet(meet.id)}
         );
     }

@@ -2,7 +2,7 @@ import {Logger} from "../../../utils/Logger";
 import {CreateFlowSteps} from "../../../enums/CreateFlowSteps";
 import {ValidationDTO} from "../../../models/ValidationDTO";
 import {timeRegExp} from "../../../utils/RegExp";
-import {Texts} from "../../../utils/Texts";
+import {TextsRu} from "../../../utils/TextsRu";
 
 export class ValidationService {
     private readonly logger = new Logger(ValidationService.name);
@@ -28,7 +28,7 @@ export class ValidationService {
 
     private async validateTime(time: string): Promise<ValidationDTO> {
         if (!timeRegExp.test(time)) {
-            return {valid: false, error: Texts.validation.invalidName}
+            return {valid: false, error: TextsRu.validation.invalidName}
         }
         return { valid: true, value: { time: time }};
     }
@@ -36,7 +36,7 @@ export class ValidationService {
     private async validateMembers(members: string[]): Promise<ValidationDTO> {
         for (const member of members) {
             if (!member.startsWith('@'))
-                return {valid: false, error: Texts.validation.invalidUsername};
+                return {valid: false, error: TextsRu.validation.invalidUsername};
         }
         return { valid: true, value: { members: members }};
     }

@@ -10,7 +10,7 @@ export class MongoMeetService extends MongoBaseService<Meeting>{
         private notificator: Notificator
     ) {
         super(db,'meetings', MongoMeetService.name);
-        cron.schedule("*/10 * * * * *", () => this.checkMeetings(this));
+        cron.schedule("* * * * *", () => this.checkMeetings(this));
     }
 
     public async insert(meet: Meeting) {
