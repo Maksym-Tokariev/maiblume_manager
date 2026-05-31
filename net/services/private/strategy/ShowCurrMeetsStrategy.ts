@@ -23,7 +23,7 @@ export class ShowCurrMeetsStrategy extends BaseStrategy {
             return;
         }
 
-        meets.stream().forEach((meet: Meeting) => { this.sender.sendMeet(input.chatId, meet)});
+        await meets.stream().forEach((meet: Meeting) => { this.sender.sendMeet(input.chatId, meet)});
     }
 
     async canHandle(event: IInputSource): Promise<Optional<boolean>> {

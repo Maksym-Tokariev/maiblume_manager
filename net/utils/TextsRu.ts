@@ -12,7 +12,7 @@ export class TextsRu {
         members: 'Перечислете учасников через пробел используя символ `@`',
         description: 'Введите описание/цели встречи',
         complete: 'Собрание успеешно создано\n ' +
-            'Посмотреть список заплпнированых собраний\n/meetings',
+            'Посмотреть список запланированых собраний\n/meetings',
     }
 
     public static meet = {
@@ -24,8 +24,7 @@ export class TextsRu {
 
     public static group = {
         invite: 'Привет! Моя цель создавать собрания, задачи и многое другое.\n' +
-            'Но сперва нужно начать диалог со мной https://t.me/MaiblumeManagerBot\n' +
-            'И наче, я не смогу с вами связыватся',
+            'Но сперва нужно начать диалог со мной https://t.me/MaiblumeManagerBot\n',
     }
 
     public static validation = {
@@ -53,8 +52,8 @@ export class TextsRu {
     public static meetMarkupText(meet: Meeting): string {
         const members = meet.members.length
             ? meet.members.map(m => '@' + m).join(' ')
-            : '-'
-        return `Дата: ${meet.date.toDateString()}\n` +
+            : '-';
+        return `Дата: ${meet.date.toDateString().substring(0, meet.date.toDateString().length - 4)}\n` +
                 `Время: ${meet.time}\n` +
                 `Учасники: ${members}\n` +
                 `Описание: ${meet.description ?? ''}\n` +

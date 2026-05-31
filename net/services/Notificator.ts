@@ -13,7 +13,11 @@ export class Notificator {
     ) {}
 
     public async notifyInGroup(meet: Meeting) {
-        await this.sender.sendMessage(process.env.GROUP_ID, TextsRu.notifyAboutMeetGroup(meet));
+        await this.sender.sendMessage(
+            process.env.GROUP_ID,
+            TextsRu.notifyAboutMeetGroup(meet),
+            {message_thread_id: Number(process.env.MESSAGE_THREAD_ID)}
+        );
         await this.notifyInPrivate(meet);
     }
 

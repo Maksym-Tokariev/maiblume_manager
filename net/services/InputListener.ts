@@ -32,6 +32,7 @@ export class InputListener {
             }
         });
         this.bot.on('message', async (msg) => {
+            console.log(msg.message_thread_id);
                 if (msg.chat.type === "private")
                     await this.addEvent(msg);
             }

@@ -20,6 +20,7 @@ export class TimeStep implements IStepHandler {
             this.logger.warn('Input data is undefined: ', input.data);
             return;
         }
+        console.log('-----------'+ input.data)
         state.data.date = new Date(input.data.substring(5, input.data.length));
 
         this.logger.debug('State: ', state);

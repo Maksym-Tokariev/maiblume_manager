@@ -9,11 +9,9 @@ export class Buttons {
         for (let i = 0; i <= 5; i++) {
             const currDate = new Date(today);
             currDate.setDate(today.getDate() + i);
-            days.push(currDate.toDateString().split('2026')[0]);
+            days.push(currDate.toDateString());
         }
-
-        console.log(days);
-        return days.map(d => [{text: d, callback_data: `date:${d}`}]);
+        return days.map(d => [{text: d.substring(0, d.length - 4), callback_data: `date:${d}`}]);
     }
 
     public static get members(): InlineKeyboardButton[][] {
